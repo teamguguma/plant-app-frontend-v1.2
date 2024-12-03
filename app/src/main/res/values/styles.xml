@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 다크 모드 고대비 테마 -->
+    <style name="AppTheme" >
+        <item name="colorPrimary">@color/background</item> <!-- 배경색 -->
+        <item name="colorPrimaryDark">@color/black</item> <!-- 다크 배경 -->
+        <item name="colorAccent">@color/button</item> <!-- 버튼 색상 -->
+        <item name="android:textColor">@color/main_text</item> <!-- 주 텍스트 색상 -->
+        <item name="android:editTextBackground">@color/editText</item> <!-- EditText 배경 색상 -->
+    </style>
+
+    <!-- 라이트 모드 고대비 테마 -->
+    <style name="AppTheme_Light">
+        <item name="colorPrimary">@color/white</item> <!-- 라이트 모드 배경색 -->
+        <item name="colorPrimaryDark">@color/blackText</item> <!-- 라이트 모드 다크 배경 -->
+        <item name="colorAccent">@color/button</item> <!-- 버튼 색상 -->
+        <item name="android:textColor">@color/blackText</item> <!-- 주 텍스트 색상 -->
+        <item name="android:editTextBackground">@color/editText</item> <!-- EditText 배경 색상 -->
+    </style>
+
+</resources>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Camera">
+
+    <!-- 카메라 프리뷰가 표시될 영역 (현재는 빈 뷰로 대체) -->
+<!--    <View-->
+<!--        android:id="@+id/camera_preview"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:background="#000"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/button_container"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent" />-->
+    <!-- CameraX 미리보기를 위한 PreviewView -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/viewFinder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#000"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/button_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- X 버튼 -->
+    <ImageButton
+        android:id="@+id/close_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_close_button"
+        android:contentDescription="@string/close_button_description"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!-- 버튼이 있는 영역.~...~..  -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/button_container"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+
+        <!-- 갤러리 버튼 -->
+        <ImageButton
+            android:id="@+id/gallery_button"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/photo_button"
+            android:contentDescription="@string/gallery_button_description"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="24dp" />
+
+    <!-- 셔터 버튼 -->
+        <ImageButton
+            android:id="@+id/shutter_button"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/ic_shutter_button"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/shutter_button_description"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--android:contentDescription="사진 촬영 버튼" 그냥 라디오 버튼 아이콘을 넣으면 사용자가 읽을 수 있는 텍스트가 없어서 접근성 관련 경고가 남,, 그래서
+저 코드를 넣어서 버튼에 콘텐츠 설명을 추가함, 스크린리더가 읽을 수 있게.....
++ 이렇게 해도 경고 문구로 shutter_button <ImageButton>: Hardcoded text 이렇게 코드에 직접 문자열 넣지 말라고 경고를 넣길래 ,
+res/values/strings.xml 파일에 <string name="shutter_button_description">사진 촬영 버튼</string>  이렇게 추가했습니다. -->
