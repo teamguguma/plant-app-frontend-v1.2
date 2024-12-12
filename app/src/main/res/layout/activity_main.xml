@@ -22,19 +22,6 @@
             android:layout_gravity="end|bottom"
             app:itemActiveIndicatorStyle="@null"
             app:itemIconSize="30dp"
-            app:labelVisibilityMode="labeled"
-            />
-        <!-- app:background 색을 지정했는데 app:backgroundTint 얘가 또 나온 이유는 그냥 백그라운드로는 메뉴바 자체의 색이 안바뀜 틴트해주니까 바뀌길래,, 그래서 그냥 백그라운드 색을 아예 요상한 색으로 바꿔보면서
-        어디가 바뀌는지 보려고 했는데 아무 변화도 없길래.. 일단 놔둠,,
-        app:itemBackground="@color/background" 이놈은 아이템을 클릭했을 때 뒤에 클릭표시로 동그란 원이 나오는데 색이 하얀색이길래 없앨라고 넣은 건데,, 다들 이렇게 하는데 나만 이지랄,, 안드로이드 ,, 도랏냐,,,?
-
-        app:itemBackground="@color/background"
-            app:itemIconTint="@color/main_text"
-            app:itemTextColor="@color/main_text"
-            android:background="@color/background"
-            app:backgroundTint="@color/background"
-
-        -->
+            app:labelVisibilityMode="labeled" />
     </FrameLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

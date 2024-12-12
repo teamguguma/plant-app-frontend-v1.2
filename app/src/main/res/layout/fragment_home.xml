@@ -12,6 +12,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
+        <TextView
+            android:id="@+id/noPlantsTextView"
+            android:layout_width="283dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="홈화면"
+            android:textColor="@color/blackText"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/plantListLayout"

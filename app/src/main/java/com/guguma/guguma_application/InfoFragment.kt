@@ -23,7 +23,6 @@ class InfoFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_info, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -40,7 +39,6 @@ class InfoFragment : Fragment() {
         initData()
     }
 
-
     private fun initData() {
 
         datas.apply {
@@ -52,8 +50,4 @@ class InfoFragment : Fragment() {
         infoAdapter.datas.addAll(datas)
         infoAdapter.notifyDataSetChanged()
     }
-
-
-
-
 }
