@@ -7,11 +7,14 @@
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
 
-    <string name="shutter_button_description">사진 촬영</string>
-    <string name="gallery_button_description">갤러리</string>
+    <string name="shutter_button_description">사진 찍기</string>
+    <string name="gallery_button_description">사진 선택</string>
     <string name="close_button_description">카메라 닫기</string>
+    <string name="back_button">뒤로가기</string>
+    <string name="register_plant">식물 등록 방식을 선택해주세요.</string>
+    <string name="error_title">오류</string>
+    <string name="error_message">이미지를 서버로 전송하는 데 실패했습니다.</string>
 
-    <string name="back_button">뒤로 가기</string>
     <string name="text_more">더보기</string>
     <string name="DateChange">날짜 변경</string>
 

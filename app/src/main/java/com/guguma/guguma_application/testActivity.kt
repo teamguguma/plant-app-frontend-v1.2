@@ -18,9 +18,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
 class testActivity : AppCompatActivity() {
-
-
-
     private val STORAGE_PERMISSION_CODE = 1001 // 권한 코드 정의
 
     // 이미지 선택 결과를 처리할 pickImageLauncher 정의
@@ -40,24 +37,23 @@ class testActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
-
-
-        // 갤러리 버튼 설정
+        // '사진 선택' 버튼 설정
         val bringGallery: Button = findViewById(R.id.bringGalleryBtn)
         bringGallery.setOnClickListener {
             checkPermissionAndOpenGallery()
         }
-
+        // '사진 촬영' 버튼 설정
         val picAddButton: Button = findViewById(R.id.PicAddBtn)
-
-        // 버튼 클릭 리스너 설정
         picAddButton.setOnClickListener {
-            // 사진 촬영을 위한 액티비티로 이동
             val intent = Intent(this, Camera::class.java)
             startActivity(intent)
         }
+        // '뒤로가기' 버튼 설정
+        val backButton: Button = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            finish()
+        }
     }
-
     // 갤러리 접근 권한 체크 및 열기
     private fun checkPermissionAndOpenGallery() {
         val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -114,11 +110,10 @@ class testActivity : AppCompatActivity() {
         }
     }
 
-    // 갤러리 열기
+    // 갤러리 앱 호출
     private fun navigatePhotos() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         pickImageLauncher.launch(intent)
     }
-
 }
