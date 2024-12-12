@@ -9,14 +9,10 @@ import android.content.Intent
 
 class MainActivity : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)  // setTheme 다음에 호출
         setContentView(R.layout.activity_main)
-
-
-
 
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_navigation)
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
@@ -56,6 +52,4 @@ class MainActivity : AppCompatActivity() {
     private fun replaceFragment(fragment: Fragment){
         supportFragmentManager.beginTransaction().replace(R.id.main_container, fragment).commit()
     }
-
-
 }

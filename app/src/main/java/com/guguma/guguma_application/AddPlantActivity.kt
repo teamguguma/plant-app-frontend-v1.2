@@ -50,9 +50,23 @@ class AddPlantActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_plant)
-        plantSearchView = findViewById(R.id.plantSearchView) //식물 종
-        addPlantButton = findViewById(R.id.addPlantBtn) // 등록하기 버튼 연결
+
+        plantSearchView = findViewById(R.id.plantSearchView) // findViewById는 한 번만 실행
+        addPlantButton = findViewById(R.id.addPlantBtn)
         imageView = findViewById(R.id.userPlantPic)
+
+        val uriString = intent.getStringExtra("imageUri")
+        val plantName = intent.getStringExtra("plantName")
+
+        if (!uriString.isNullOrEmpty()) {
+            imageUri = Uri.parse(uriString)
+            Glide.with(this).load(imageUri).into(imageView)
+        }
+
+        if (!plantName.isNullOrEmpty()) {
+            plantSearchView.setText(plantName)
+        }
+        
         addDateTextView = findViewById(R.id.AddDate) // 등록 일자 텍스트뷰
         dateBtn = findViewById(R.id.DateBtn) // 날짜 변경 버튼
         lastWaterTextView = findViewById(R.id.LastWater) // 마지막으로 물 준 날짜 일자 텍스트뷰
@@ -61,14 +75,13 @@ class AddPlantActivity : AppCompatActivity() {
         imageView.clipToOutline = true
 
         // 이미지 URI를 전달받기
-        val uriString = intent.getStringExtra("imageUri")
         if (!uriString.isNullOrEmpty()) {
             imageUri = Uri.parse(uriString) // String을 URI로 변환
             Glide.with(this)
                 .load(imageUri) // 이미지 URI를 로드
                 .apply(RequestOptions.circleCropTransform()) // 원형 이미지로 변환
                 .into(imageView) // ImageView에 이미지 설정
-            uploadImage(Uri.parse(uriString))
+            uploadImage(imageUri!!)
         }
 
         val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())

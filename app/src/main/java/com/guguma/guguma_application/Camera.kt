@@ -10,7 +10,7 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import android.Manifest
-import android.view.KeyEvent
+
 import android.os.Build
 import android.content.ContentValues
 import android.provider.MediaStore
@@ -40,6 +40,7 @@ import android.net.Uri
 
 
 class Camera : AppCompatActivity() {
+
     private lateinit var viewFinder: PreviewView  // 카메라 미리보기를 위한 PreviewView
     private lateinit var imageCapture: ImageCapture
     private lateinit var cameraExecutor: ExecutorService  // 카메라 작업을 위한 Executor
@@ -168,10 +169,12 @@ class Camera : AppCompatActivity() {
                     cameraExecutor.execute {
                         sendImageToServer(reducedBitmap)  // 서버로 전송하는 함수 호출
                     }
+                    //sendImageToServer(bitmap)  // 서버로 전송하는 함수 호출
                     Log.d("CameraXApp", "사진이 성공적으로 촬영되었습니다.")
                 }
+
                 override fun onError(exception: ImageCaptureException) {
-                    Log.e("CameraXApp", "사진 촬영 실패: ${exception.message}", exception)
+                    Log.e("DebugCamera", "Photo capture failed: ${exception.message}", exception)
                 }
             }
         )
@@ -490,4 +493,6 @@ class Camera : AppCompatActivity() {
         intent.type = "image/*"
         startActivityForResult(intent,2000)
     }
+
+
 }
