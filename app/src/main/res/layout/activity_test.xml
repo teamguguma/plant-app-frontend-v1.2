@@ -14,10 +14,10 @@
         android:gravity="center">
 
         <TextView
-        android:id="@+id/noPlantsTextView"
+        android:id="@+id/addPlantsTextView"
         android:layout_width="283dp"
         android:layout_height="wrap_content"
-        android:gravity="left"
+        android:gravity="start"
         android:text="식물 등록"
         android:textColor="@color/blackText"
         android:textSize="20sp"
@@ -27,7 +27,7 @@
             android:id="@+id/noPlantsTextView"
             android:layout_width="283dp"
             android:layout_height="wrap_content"
-            android:gravity="left"
+            android:gravity="start"
             android:text="갤러리 사진 선택과 사진 찍기 중 식물 등록 방식을 선택해주세요."
             android:textColor="@color/blackText"
             android:textSize="20sp"
@@ -45,7 +45,7 @@
             android:layout_marginTop="30dp"
             android:contentDescription="@string/gallery_button_description"/>
         <Button
-            android:id="@+id/PicAddBtn"
+            android:id="@+id/picAddBtn"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:padding="10dp"

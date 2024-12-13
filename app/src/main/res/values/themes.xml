@@ -5,10 +5,6 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="colorPrimary">@color/background</item>
         <item name="colorPrimaryVariant">@color/main_text</item>
-
     </style>
-
     <style name="Theme.Guguma_Application" parent="Base.Theme.Guguma_Application" />
-
-
 </resources>
