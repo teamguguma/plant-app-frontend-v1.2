@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Camera">
 
-    <!-- 카메라 프리뷰가 표시될 영역 (현재는 빈 뷰로 대체) -->
-<!--    <View-->
-<!--        android:id="@+id/camera_preview"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:background="#000"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/button_container"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
-    <!-- CameraX 미리보기를 위한 PreviewView -->
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="0dp"
@@ -25,7 +14,28 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/button_container"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" >
+        <TextView
+            android:id="@+id/warningTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="경고 메시지가 여기에 표시됩니다."
+            android:visibility="gone"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="16sp"
+            android:layout_gravity="center_horizontal"
+            />
+        <Switch
+            android:id="@+id/modeToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="16dp"
+            android:text="자동 촬영"
+            android:textColor="@color/white"
+            tools:ignore="MissingConstraints" />
+    </androidx.camera.view.PreviewView>
 
     <!-- X 버튼 -->
     <ImageButton
@@ -39,7 +49,6 @@
         android:foreground="?attr/selectableItemBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <!-- 버튼이 있는 영역.~...~..  -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,7 +73,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="24dp" />
 
-    <!-- 셔터 버튼 -->
+        <!-- 셔터 버튼 -->
         <ImageButton
             android:id="@+id/shutter_button"
             android:layout_width="96dp"
@@ -77,13 +86,5 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--android:contentDescription="사진 촬영 버튼" 그냥 라디오 버튼 아이콘을 넣으면 사용자가 읽을 수 있는 텍스트가 없어서 접근성 관련 경고가 남,, 그래서
-저 코드를 넣어서 버튼에 콘텐츠 설명을 추가함, 스크린리더가 읽을 수 있게.....
-+ 이렇게 해도 경고 문구로 shutter_button <ImageButton>: Hardcoded text 이렇게 코드에 직접 문자열 넣지 말라고 경고를 넣길래 ,
-res/values/strings.xml 파일에 <string name="shutter_button_description">사진 촬영 버튼</string>  이렇게 추가했습니다. -->

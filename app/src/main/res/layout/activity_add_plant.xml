@@ -54,7 +54,7 @@
                             android:layout_gravity="top|left"
                             android:layout_marginBottom="70dp"
                             android:layout_marginStart="8dp"
-                            android:text="식물 종"
+                            android:text="식물 이름"
                             android:textColor="@color/blackText"
                             android:textSize="20sp"
                             android:textStyle="bold"/>
@@ -64,7 +64,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="8dp"
-                            android:hint="식물 종"
+                            android:hint="식물 이름"
                             android:textColorHint="@color/editTextHint"
                             android:padding="15dp"
                             android:maxLength="20"
@@ -93,7 +93,7 @@
                             android:layout_gravity="top|left"
                             android:layout_marginBottom="70dp"
                             android:layout_marginStart="8dp"
-                            android:text="닉네임"
+                            android:text="식물 별명"
                             android:textColor="@color/blackText"
                             android:textSize="20sp"
                             android:textStyle="bold"/>
@@ -104,7 +104,7 @@
                             android:layout_height="wrap_content"
                             android:paddingLeft="8dp"
                             android:ems="10"
-                            android:hint="식물 닉네임"
+                            android:hint="식물 별명"
                             android:textColorHint="@color/editTextHint"
                             android:padding="15dp"
                             android:maxLength="20"
@@ -122,46 +122,7 @@
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal">
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/AddDateTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="top|left"
-                            android:layout_marginBottom="70dp"
-                            android:layout_marginStart="8dp"
-                            android:text="등록 일자"
-                            android:textColor="@color/blackText"
-                            android:textSize="20sp"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:id="@+id/AddDate"
-                            android:layout_width="230dp"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="8dp"
-                            android:ems="10"
-                            android:hint="등록 일자"
-                            android:textColorHint="@color/editTextHint"
-                            android:padding="15dp"
-                            android:inputType="datetime"
-                            android:textColor="@color/blackText"
-                            android:textSize="16sp"
-                            android:layout_gravity="center_vertical" />
-
-                        <ImageButton
-                            android:id="@+id/DateBtn"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_gravity="center_vertical|right"
-                            android:src="@drawable/ic_calendar"
-                            android:contentDescription="@string/DateChange"
-                            />
-
-                    </FrameLayout>
                 </LinearLayout>
 
                 <!-- 물 주기 필드 -->
@@ -173,18 +134,16 @@
                     android:orientation="vertical"
                     android:paddingBottom="20dp">
 
-
-                        <TextView
-                            android:id="@+id/WaterTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="top|left"
-
-                            android:layout_marginStart="8dp"
-                            android:text="물 주기"
-                            android:textColor="@color/blackText"
-                            android:textSize="20sp"
-                            android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/WaterTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|left"
+                        android:layout_marginStart="8dp"
+                        android:text="물 주기 (며칠에 한 번)"
+                        android:textColor="@color/blackText"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -193,32 +152,12 @@
                         android:gravity="center_vertical">
 
                         <EditText
-                            android:id="@+id/Water"
+                            android:id="@+id/WaterInterval"
                             android:layout_width="90dp"
                             android:layout_height="wrap_content"
                             android:paddingLeft="8dp"
                             android:ems="10"
-                            android:hint="물 주기"
-                            android:textColorHint="@color/editTextHint"
-                            android:padding="15dp"
-                            android:maxLength="2"
-                            android:inputType="number"
-                            android:textColor="@color/blackText"
-                            android:textSize="16sp" />
-
-                        <Spinner
-                            android:id="@+id/spinner_addplantwater"
-                            android:layout_width="70dp"
-                            android:layout_height="60dp"
-                            android:background="@drawable/spinner_addplant_background"/>
-
-                        <EditText
-                            android:id="@+id/HowMany"
-                            android:layout_width="70dp"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="8dp"
-                            android:ems="10"
-                            android:hint="횟수"
+                            android:hint="일"
                             android:textColorHint="@color/editTextHint"
                             android:padding="15dp"
                             android:maxLength="2"
@@ -227,18 +166,14 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/HowManyText"
-                            android:layout_width="70dp"
+                            android:id="@+id/WaterTextUnit"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:text="번"
-                            android:textColorHint="@color/editTextHint"
-                            android:padding="15dp"
-                            android:inputType="datetime"
+                            android:layout_marginStart="8dp"
+                            android:text="일에 한 번"
                             android:textColor="@color/blackText"
                             android:textSize="16sp"
-                            android:layout_gravity="center_vertical" />
-
+                            android:gravity="center_vertical" />
                     </LinearLayout>
                 </LinearLayout>
 
