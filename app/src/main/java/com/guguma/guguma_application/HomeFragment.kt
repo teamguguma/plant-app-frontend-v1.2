@@ -1,5 +1,6 @@
 package com.guguma.guguma_application
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,31 +15,33 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.guguma.guguma_application.databinding.FragmentHomeBinding
 
 
 class HomeFragment : Fragment() {
-
-
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        // 해당 Fragment의 레이아웃을 인플레이트합니다.
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
-        // 이제 view.findViewById는 view가 초기화된 후 호출됩니다.
-        val addPlantButton: Button = view.findViewById(R.id.plantBtn)
-
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         // 버튼 클릭 리스너 설정
-        addPlantButton.setOnClickListener {
+        binding.plantBtn.setOnClickListener {
             // Intent를 사용하여 AddPlantActivity를 엽니다.
             val intent = Intent(activity, testActivity::class.java)
             startActivity(intent)
         }
 
-        return view  // return 문을 마지막에 위치시킵니다.
+        return binding.root
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null //메모리 누수 방지
     }
 
 

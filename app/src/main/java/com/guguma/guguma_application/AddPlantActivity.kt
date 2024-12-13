@@ -97,7 +97,7 @@ class AddPlantActivity : AppCompatActivity() {
         }
 
         addPlantButton.setOnClickListener {
-            Toast.makeText(this, "등록 완료", Toast.LENGTH_SHORT).show()
+            val plantsearchview = binding.etPlantListname.text.toString() //만드는 중...
         }
 
         val outCategoryList = listOf("월", "주", "일")
