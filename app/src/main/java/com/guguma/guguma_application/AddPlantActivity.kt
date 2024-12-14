@@ -1,6 +1,8 @@
 package com.guguma.guguma_application
 
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -245,6 +247,11 @@ class AddPlantActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (response.isSuccessful) {
                         Toast.makeText(this@AddPlantActivity, "식물 등록 성공", Toast.LENGTH_SHORT).show()
+                        val resultIntent = Intent()
+                        resultIntent.putExtra("newPlantName", plantName)
+                        resultIntent.putExtra("newPlantNickname", plantNickname)
+                        resultIntent.putExtra("newPlantImageUrl", "http://example.com/image.jpg") // 예제 이미지 URL
+                        setResult(Activity.RESULT_OK, resultIntent) // 결과 설정
                         finish() // 등록 후 화면 종료
                     } else {
                         Toast.makeText(this@AddPlantActivity, "식물 등록 실패: ${response.message}", Toast.LENGTH_SHORT).show()
