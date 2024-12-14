@@ -40,6 +40,9 @@ class AddPlantActivity : AppCompatActivity() {
     private lateinit var lastWaterBtn: ImageButton // 마지막으로 물 준 날짜 변경 버튼
     private lateinit var waterIntervalEditText: EditText // 물 주기 (며칠에 한 번)
     private lateinit var plantSearchView: EditText // 식물 이름 EditText
+    private lateinit var plantNickname: String  // 식물 별명
+    val recognizeUrl = BuildConfig.API_PLANT_RECOGNIZE
+    val registerUrl = BuildConfig.API_PLANT_REGISTER
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +61,7 @@ class AddPlantActivity : AppCompatActivity() {
         // Intent에서 이미지 URI 및 식물 이름 가져오기
         val uriString = intent.getStringExtra("imageUri")
         val plantName = intent.getStringExtra("plantName")
+        val plantNickame = intent.getStringExtra("plantNickname")
 
         if (!uriString.isNullOrEmpty()) {
             imageUri = Uri.parse(uriString)
@@ -81,6 +85,11 @@ class AddPlantActivity : AppCompatActivity() {
             showDatePickerDialog()
         }
 
+        val plantNicknameFromIntent = intent.getStringExtra("plantNickname")
+        if (!plantNicknameFromIntent.isNullOrEmpty()) {
+            plantNickname = plantNicknameFromIntent
+        }
+
         // 등록하기 버튼 클릭 이벤트
         addPlantButton.setOnClickListener {
             val waterInterval = waterIntervalEditText.text.toString()
@@ -90,6 +99,7 @@ class AddPlantActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "물 주기를 입력하세요.", Toast.LENGTH_SHORT).show()
             }
+            registerPlant()
         }
     }
 
@@ -169,4 +179,61 @@ class AddPlantActivity : AppCompatActivity() {
             }
         })
     }
+
+    private fun registerPlant() {
+        val TAG = "AddPlantActivity"
+
+        // 입력값 가져오기
+        val plantName = plantSearchView.text.toString()
+        val waterInterval = waterIntervalEditText.text.toString()
+        val lastWateredDate = lastWaterTextView.text.toString()
+
+        if (plantName.isEmpty() || waterInterval.isEmpty()) {
+            Toast.makeText(this, "모든 필드를 입력하세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // JSON 요청 바디 생성
+        val jsonBody = """
+        {
+            "name": "$plantName",
+            "nickName": "$plantNickname",
+            "waterInterval": $waterInterval,
+            "lastWateredDate": "$lastWateredDate",
+            "imageUrl": "http://example.com/image.jpg",
+            "user": { "id": 1 } 
+        }
+    """.trimIndent()
+
+        val requestBody = jsonBody.toRequestBody("application/json".toMediaTypeOrNull())
+
+        // HTTP 요청 생성
+        val request = Request.Builder()
+            .url(BuildConfig.API_PLANT_REGISTER) // 백엔드 API 엔드포인트
+            .post(requestBody)
+            .build()
+
+        // HTTP 요청 실행
+        OkHttpClient().newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e(TAG, "Failed to register plant: ${e.message}")
+                runOnUiThread {
+                    Toast.makeText(this@AddPlantActivity, "식물 등록 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                runOnUiThread {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@AddPlantActivity, "식물 등록 성공", Toast.LENGTH_SHORT).show()
+                        finish() // 등록 후 화면 종료
+                    } else {
+                        Toast.makeText(this@AddPlantActivity, "식물 등록 실패: ${response.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                response.close()
+            }
+        })
+    }
+
 }

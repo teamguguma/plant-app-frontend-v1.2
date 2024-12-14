@@ -1,4 +1,4 @@
-import java.util.*
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -9,14 +9,6 @@ android {
     namespace = "com.guguma.guguma_application"
     compileSdk = 34
 
-    val localProperties = Properties()
-    val localPropertiesFile = rootProject.file("local.properties")
-    if (localPropertiesFile.exists()) {
-        localPropertiesFile.inputStream().use { localProperties.load(it) }
-    }
-    val API_PLANT_DETECT = localProperties.getProperty("api.key.plant.detect") ?: ""
-    val API_PLANT_RECOGNIZE = localProperties.getProperty("api.key.plant.recognize") ?: ""
-
     defaultConfig {
         applicationId = "com.guguma.guguma_application"
         minSdk = 24
@@ -24,17 +16,32 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "API_PLANT_DETECT", "\"$API_PLANT_DETECT\"")
-        buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$API_PLANT_RECOGNIZE\"")
-        resValue("string", "API_PLANT_DETECT", API_PLANT_DETECT)
-        resValue("string", "API_PLANT_RECOGNIZE", API_PLANT_RECOGNIZE)
+        // local.properties 파일 읽기
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localPropertiesFile.inputStream().use { localProperties.load(it) }
+        }
 
+        // 기본 URL 및 엔드포인트를 BuildConfig에 추가
+        val baseUrl = localProperties.getProperty("api.aws.base.url", "http://localhost:8080/api")
+        val detectPath = localProperties.getProperty("api.key.plant.detect")
+        val recognizePath = localProperties.getProperty("api.key.plant.recognize", "/plants/recognize")
+        val registerPath = localProperties.getProperty("api.key.plant.register", "/plants/register")
+        val localbaseUrl = localProperties.getProperty("api.local.base.url")
 
+        buildConfigField("String", "API_BASE_URL", "\"$baseUrl\"")
+        buildConfigField("String", "API_PLANT_DETECT", "\"$detectPath\"")
+        buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$baseUrl$recognizePath\"")
+//        buildConfigField("String", "API_PLANT_REGISTER", "\"$baseUrl$registerPath\"")
+//        buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$localbaseUrl$recognizePath\"")
+        buildConfigField("String", "API_PLANT_REGISTER", "\"$localbaseUrl$registerPath\"")
     }
+
     buildFeatures {
         buildConfig = true
     }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -44,19 +51,20 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
 }
 
 dependencies {
-
     implementation("com.google.code.gson:gson:2.11.0")
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
