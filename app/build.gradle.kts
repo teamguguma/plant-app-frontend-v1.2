@@ -34,6 +34,7 @@ android {
         val recognizePath = localProperties.getProperty("api.key.plant.recognize", "/plants/recognize")
         val registerPath = localProperties.getProperty("api.key.plant.register", "/plants/register")
         val localbaseUrl = localProperties.getProperty("api.local.base.url")
+        val plantlistPath = localProperties.getProperty("api.key.plant.plantlist", "/plants/user/1")
 
         buildConfigField("String", "API_BASE_URL", "\"$baseUrl\"")
         buildConfigField("String", "API_PLANT_DETECT", "\"$detectPath\"")
@@ -41,6 +42,7 @@ android {
 //        buildConfigField("String", "API_PLANT_REGISTER", "\"$baseUrl$registerPath\"")
 //        buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$localbaseUrl$recognizePath\"")
         buildConfigField("String", "API_PLANT_REGISTER", "\"$localbaseUrl$registerPath\"")
+        buildConfigField("String", "API_PLANT_LIST", "\"$localbaseUrl$plantlistPath\"")
     }
 
     buildFeatures {
