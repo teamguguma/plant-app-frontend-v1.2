@@ -40,7 +40,7 @@ class AddPlantActivity : AppCompatActivity() {
     private lateinit var lastWaterBtn: ImageButton // 마지막으로 물 준 날짜 변경 버튼
     private lateinit var waterIntervalEditText: EditText // 물 주기 (며칠에 한 번)
     private lateinit var plantSearchView: EditText // 식물 이름 EditText
-    private lateinit var plantNickname: String  // 식물 별명
+    private lateinit var plantNicknameEditText: EditText  // 식물 별명
     val recognizeUrl = BuildConfig.API_PLANT_RECOGNIZE
     val registerUrl = BuildConfig.API_PLANT_REGISTER
 
@@ -55,13 +55,14 @@ class AddPlantActivity : AppCompatActivity() {
         lastWaterTextView = findViewById(R.id.LastWater)
         lastWaterBtn = findViewById(R.id.LastWaterBtn)
         waterIntervalEditText = findViewById(R.id.WaterInterval)
+        plantNicknameEditText = findViewById(R.id.plantNicknameEditText) // 별명 EditText 초기화
 
         imageView.clipToOutline = true
 
         // Intent에서 이미지 URI 및 식물 이름 가져오기
         val uriString = intent.getStringExtra("imageUri")
         val plantName = intent.getStringExtra("plantName")
-        val plantNickame = intent.getStringExtra("plantNickname")
+        val plantNickname = intent.getStringExtra("plantNickname")
 
         if (!uriString.isNullOrEmpty()) {
             imageUri = Uri.parse(uriString)
@@ -85,13 +86,9 @@ class AddPlantActivity : AppCompatActivity() {
             showDatePickerDialog()
         }
 
-        val plantNicknameFromIntent = intent.getStringExtra("plantNickname")
-        if (!plantNicknameFromIntent.isNullOrEmpty()) {
-            plantNickname = plantNicknameFromIntent
-        }
-
         // 등록하기 버튼 클릭 이벤트
         addPlantButton.setOnClickListener {
+
             val waterInterval = waterIntervalEditText.text.toString()
             if (waterInterval.isNotEmpty()) {
                 Toast.makeText(this, "물 주기: $waterInterval 일에 한 번", Toast.LENGTH_SHORT).show()
@@ -179,14 +176,33 @@ class AddPlantActivity : AppCompatActivity() {
             }
         })
     }
-
+    private fun normalizeDateFormat(date: String): String {
+        // 입력된 날짜가 올바른 형식인지 확인하고 수정
+        return try {
+            val parts = date.split("-")
+            if (parts.size == 3) {
+                val year = parts[0].padStart(4, '0')
+                val month = parts[1].padStart(2, '0')
+                val day = parts[2].padStart(2, '0')
+                "$year-$month-$day" // yyyy-MM-dd 형식 반환
+            } else {
+                date // 원본 반환 (비정상 입력)
+            }
+        } catch (e: Exception) {
+            date // 예외 발생 시 원본 반환
+        }
+    }
     private fun registerPlant() {
         val TAG = "AddPlantActivity"
 
         // 입력값 가져오기
         val plantName = plantSearchView.text.toString()
+        val plantNickname = plantNicknameEditText.text.toString()
         val waterInterval = waterIntervalEditText.text.toString()
-        val lastWateredDate = lastWaterTextView.text.toString()
+        var lastWateredDate = lastWaterTextView.text.toString()
+
+        // 날짜 형식 자동 정리
+        lastWateredDate = normalizeDateFormat(lastWateredDate)
 
         if (plantName.isEmpty() || waterInterval.isEmpty()) {
             Toast.makeText(this, "모든 필드를 입력하세요.", Toast.LENGTH_SHORT).show()
@@ -197,13 +213,16 @@ class AddPlantActivity : AppCompatActivity() {
         val jsonBody = """
         {
             "name": "$plantName",
-            "nickName": "$plantNickname",
+            "nickname": "$plantNickname",
             "waterInterval": $waterInterval,
             "lastWateredDate": "$lastWateredDate",
             "imageUrl": "http://example.com/image.jpg",
+            "characteristics": "식물간단설명테스트임시",
             "user": { "id": 1 } 
         }
     """.trimIndent()
+        // JSON 디버그 로그 출력
+        Log.d(TAG, "Request JSON: $jsonBody")
 
         val requestBody = jsonBody.toRequestBody("application/json".toMediaTypeOrNull())
 
