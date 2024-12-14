@@ -1,8 +1,13 @@
 import java.util.Properties
 
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp") version "1.9.0-1.0.13"
+    //id("kotlin-kapt")
+
 }
 
 android {
@@ -60,9 +65,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    viewBinding {
+        enable = true
+    }
 }
 
 dependencies {
+
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.core:core-ktx:1.9.0")
@@ -80,3 +90,5 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 }
+
+//room 모듈을 불러오기 위해 kapt 설치를 진행했으나 jdk버전이 충돌한다는 이유로 빌드조차 되지 않음 , kapt->ksp로 변경 후 충돌 없이 잘 돌아감
