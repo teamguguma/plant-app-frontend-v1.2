@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.guguma.guguma_application.dto.PlantDto
 
-class PlantAdapter(private val context: Context, val plantList: MutableList<PlantDto>) : BaseAdapter() {
+class PlantAdapter(private val context: Context, private val plantList: MutableList<PlantDto>) : BaseAdapter() {
 
     override fun getCount(): Int = plantList.size
 
@@ -32,4 +32,12 @@ class PlantAdapter(private val context: Context, val plantList: MutableList<Plan
 
         return view
     }
+
+    // 외부에서 데이터를 갱신할 수 있는 메서드 추가
+    fun updateData(newPlantList: List<PlantDto>) {
+        plantList.clear()
+        plantList.addAll(newPlantList)
+        notifyDataSetChanged() // 데이터 변경 후 UI 갱신
+    }
+
 }
