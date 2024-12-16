@@ -1,5 +1,6 @@
 package com.guguma.guguma_application
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,32 +15,80 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-
+import com.guguma.guguma_application.databinding.FragmentHomeBinding
+import okhttp3.*
+import org.json.JSONArray
+import android.util.Log
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import com.guguma.guguma_application.dto.PlantDto
+import com.guguma.guguma_application.viewmodel.PlantViewModel
+import java.io.IOException
 
 class HomeFragment : Fragment() {
 
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+    private val plantViewModel: PlantViewModel by activityViewModels()
 
+    companion object {
+        const val REQUEST_ADD_PLANT = 1001 // AddPlantActivity의 요청 코드
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        // 해당 Fragment의 레이아웃을 인플레이트합니다.
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
-        // 이제 view.findViewById는 view가 초기화된 후 호출됩니다.
-        val addPlantButton: Button = view.findViewById(R.id.plantBtn)
-
-
-        // 버튼 클릭 리스너 설정
-        addPlantButton.setOnClickListener {
-            // Intent를 사용하여 AddPlantActivity를 엽니다.
-            val intent = Intent(activity, testActivity::class.java)
-            startActivity(intent)
+        // LiveData를 observe하여 UI 업데이트
+        plantViewModel.plantList.observe(viewLifecycleOwner) { updatedPlantList ->
+            updateUI(updatedPlantList)
         }
 
-        return view  // return 문을 마지막에 위치시킵니다.
+        // 식물 추가 버튼 클릭 리스너
+        binding.plantBtn.setOnClickListener {
+            val intent = Intent(activity, AddPlantActivity::class.java)
+            startActivityForResult(intent, REQUEST_ADD_PLANT)
+        }
+
+        return binding.root
+
     }
 
+    // AddPlantActivity에서 돌아왔을 때 처리
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_ADD_PLANT && resultCode == Activity.RESULT_OK) {
+            val newPlantName = data?.getStringExtra("newPlantName")
+            val newPlantNickname = data?.getStringExtra("newPlantNickname")
+            val newPlantImageUrl = data?.getStringExtra("newPlantImageUrl")
+
+            if (newPlantName != null && newPlantNickname != null && newPlantImageUrl != null) {
+                val newPlant = PlantDto(newPlantName, newPlantNickname, newPlantImageUrl)
+                Log.d("HomeFragment", "Adding new plant: $newPlant")
+
+                // ViewModel에 데이터 추가 및 갱신 요청
+                plantViewModel.addPlantAndRefresh(newPlant)
+            }
+        }
+    }
+
+    // UI 업데이트 메서드
+    private fun updateUI(plantList: MutableList<PlantDto>) {
+        val adapter = binding.plantListView.adapter as? PlantAdapter
+        if (adapter == null) {
+            // 어댑터가 없으면 새로 생성
+            binding.plantListView.adapter = PlantAdapter(requireContext(), plantList)
+        } else {
+            // 어댑터가 이미 존재하면 데이터 갱신
+            adapter.updateData(plantList)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // 메모리 누수 방지
+    }
 
 }

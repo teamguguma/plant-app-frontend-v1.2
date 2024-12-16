@@ -23,7 +23,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
@@ -66,6 +65,7 @@ class AddPlantActivity : AppCompatActivity() {
         // Intent 데이터 처리
         val uriString = intent.getStringExtra("imageUri")
         val plantName = intent.getStringExtra("plantName")
+        val plantNickname = intent.getStringExtra("plantNickname")
 
         if (!uriString.isNullOrEmpty()) {
             imageUri = Uri.parse(uriString)
@@ -99,6 +99,7 @@ class AddPlantActivity : AppCompatActivity() {
     }
 
     private fun showDatePickerDialog() {
+        // 현재 날짜
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
