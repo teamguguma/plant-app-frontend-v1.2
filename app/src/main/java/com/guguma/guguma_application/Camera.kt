@@ -1,42 +1,48 @@
 package com.guguma.guguma_application
 
+import android.Manifest
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-
-import android.widget.Toast
-import android.widget.ImageButton
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
-import android.Manifest
-
-import android.os.Build
-import android.content.ContentValues
-import android.provider.MediaStore
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageFormat
 import android.graphics.Rect
 import android.graphics.YuvImage
+import android.net.Uri
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
-import androidx.camera.core.*
+import android.widget.ImageButton
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.ImageProxy
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.camera.core.ImageProxy
-import okhttp3.*
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
-import androidx.activity.result.contract.ActivityResultContracts
-import java.io.File
-import android.os.Environment
-import androidx.core.app.ActivityCompat
-import android.net.Uri
 
 
 class Camera : AppCompatActivity() {
@@ -233,14 +239,22 @@ class Camera : AppCompatActivity() {
                         val responseString = res.body?.string() ?: "null"
                         Log.d("DebugNetwork", "Server response: $responseString")
                         try {
+                            // JSON 응답 파싱
                             val jsonResponse = JSONObject(responseString)
-                            val message = jsonResponse.optString("message", "No message")
+                            var plantName = jsonResponse.optString("name", "이름 정보 없음")
+
+                            // 정규 표현식으로 한글만 추출
+                            plantName = plantName.replace("[^가-힣]".toRegex(), "")
+
+                            val status = jsonResponse.optString("status", "상태 정보 없음")
+                            val remedy = jsonResponse.optString("remedy", "대처법 정보 없음")
+
+                            // 로그 출력
+                            Log.d("DebugNetwork", "식물 이름: $plantName, 상태: $status, 대처법: $remedy")
+
                             runOnUiThread {
-                                if (message.contains("다시")) {
-                                    showEdgePopup(message)
-                                } else {
-                                    showConfirmationPopup(bitmap)
-                                }
+                                // 팝업에 이름 표시
+//                                showConfirmationPopupWithDetails(plantName, status, remedy)
                             }
                         } catch (e: Exception) {
                             Log.e("DebugNetwork", "Error parsing JSON response: ${e.message}", e)
