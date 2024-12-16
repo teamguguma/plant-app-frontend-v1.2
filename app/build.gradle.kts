@@ -39,9 +39,9 @@ android {
 
         buildConfigField("String", "API_BASE_URL", "\"$baseUrl\"")
         buildConfigField("String", "API_PLANT_DETECT", "\"$detectPath\"")
-        buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$baseUrl$recognizePath\"")
+//        buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$baseUrl$recognizePath\"")
 //        buildConfigField("String", "API_PLANT_REGISTER", "\"$baseUrl$registerPath\"")
-//        buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$localbaseUrl$recognizePath\"")
+        buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$localbaseUrl$recognizePath\"")
         buildConfigField("String", "API_PLANT_REGISTER", "\"$localbaseUrl$registerPath\"")
         buildConfigField("String", "API_PLANT_LIST", "\"$localbaseUrl$plantlistPath\"")
         buildConfigField("String", "API_PLANT_DELETE", "\"$localbaseUrl$plantlistdeletePath\"")
