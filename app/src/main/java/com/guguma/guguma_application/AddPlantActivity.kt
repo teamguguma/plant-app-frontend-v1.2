@@ -1,6 +1,8 @@
 package com.guguma.guguma_application
 
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -23,6 +25,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
@@ -223,7 +226,19 @@ class AddPlantActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 runOnUiThread {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@AddPlantActivity, "식물 등록 성공", Toast.LENGTH_SHORT).show()
+                        val responseBody = response.body?.string()
+                        val jsonResponse = JSONObject(responseBody)
+                        val plantId = jsonResponse.getLong("id")
+                        val plantName = jsonResponse.getString("name")
+                        val plantNickname = jsonResponse.getString("nickname")
+                        val plantImageUrl = jsonResponse.getString("imageUrl")
+
+                        val intent = Intent()
+                        intent.putExtra("plantId", plantId)
+                        intent.putExtra("newPlantName", plantName)
+                        intent.putExtra("newPlantNickname", plantNickname)
+                        intent.putExtra("newPlantImageUrl", plantImageUrl)
+                        setResult(Activity.RESULT_OK, intent)
                         finish()
                     } else {
                         Toast.makeText(this@AddPlantActivity, "등록 실패: ${response.message}", Toast.LENGTH_SHORT).show()
