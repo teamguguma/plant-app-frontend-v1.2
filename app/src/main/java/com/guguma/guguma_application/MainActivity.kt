@@ -23,20 +23,10 @@ class MainActivity : AppCompatActivity() {
                     //item.setIcon(R.drawable.) 아이콘 바꾸기 효과 주려고 도전 중
                     true
                 }
-                R.id.nav_doctor -> {
-                    //식물 진단 화면 처리
-                    replaceFragment(DoctorFragment())
-                    true
-                }
                 R.id.nav_camera -> {
                     //카메라 화면 처리 (카메라 프래그먼트가 아닌 카메라 액티비티로 이동)
                     val intent = Intent(this, Camera::class.java)  // CameraActivity 실행
                     startActivity(intent)
-                    true
-                }
-                R.id.nav_myPlant -> {
-                    //나의 정원 화면 처리
-                    replaceFragment(MyPlantFragment())
                     true
                 }
                 R.id.nav_info -> {

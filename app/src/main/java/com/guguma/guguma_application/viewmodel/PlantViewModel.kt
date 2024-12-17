@@ -53,42 +53,19 @@ class PlantViewModel : ViewModel() {
         })
     }
 
-    // 식물 추가 및 서버 데이터 재동기화
-    fun addPlantAndRefresh(newPlant: PlantDto) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val jsonBody = """
-            {
-                "name": "${newPlant.name}",
-                "nickname": "${newPlant.nickname}",
-                "imageUrl": "${newPlant.imageUrl}",
-                "user": { "id": 1 }
-            }
-        """.trimIndent()
-            val requestBody = jsonBody.toRequestBody("application/json".toMediaTypeOrNull())
-            val request = Request.Builder()
-                .url(BuildConfig.API_PLANT_REGISTER)
-                .post(requestBody)
-                .build()
 
-            client.newCall(request).enqueue(object : Callback {
-                override fun onResponse(call: Call, response: Response) {
-                    if (response.isSuccessful) {
-                        Log.d("PlantViewModel", "Plant added successfully: $newPlant")
-                        fetchPlantsFromServer() // 추가 후 데이터 갱신
-                    } else {
-                        Log.e("PlantViewModel", "Failed to add plant: ${response.message}")
-                    }
-                }
 
-                override fun onFailure(call: Call, e: IOException) {
-                    Log.e("PlantViewModel", "Failed to add plant: ${e.message}")
-                }
-            })
-        }
+    fun addPlant(plant: PlantDto) {
+        // LiveData에 추가
+        val currentList = _plantList.value ?: mutableListOf()
+        currentList.add(plant) // 기존 리스트에 새 식물 추가
+        _plantList.value = currentList // LiveData 갱신
     }
 
+
+
     // 식물 삭제
-    fun deletePlant(id: Int) {
+    fun deletePlant(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             val request = Request.Builder()
                 .url("${BuildConfig.API_PLANT_DELETE.replace("{id}", id.toString())}")
@@ -116,10 +93,12 @@ class PlantViewModel : ViewModel() {
 
         for (i in 0 until jsonArray.length()) {
             val item = jsonArray.getJSONObject(i)
+
+            val id = item.getLong("id") // id를 Long 타입으로 가져옴
             val name = item.getString("name")
             val nickname = item.getString("nickname")
             val imageUrl = item.getString("imageUrl")
-            plantList.add(PlantDto(name, nickname, imageUrl))
+            plantList.add(PlantDto(id, name, nickname, imageUrl))
         }
 
         return plantList
