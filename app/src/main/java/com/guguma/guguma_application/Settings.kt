@@ -1,9 +1,8 @@
 package com.guguma.guguma_application
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
-
 
 
 class Settings : AppCompatActivity() {
@@ -11,7 +10,7 @@ class Settings : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings) // activity_settings.xml을 설정
+//        setContentView(R.layout.activity_settings) // activity_settings.xml을 설정
 
 
 
@@ -19,7 +18,7 @@ class Settings : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragment_info_container, SettingsFragment())
+//                .replace(R.id.fragment_info_container, SettingsFragment())
                 .commit()
         }
     }

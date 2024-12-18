@@ -1,22 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -28,22 +22,16 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Guguma_Application"
-        tools:targetApi="31">
+        android:theme="@style/Theme.Guguma_Application">
+
         <activity
-            android:name=".testActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AddPlantActivity"
-            android:exported="false" />
-        <activity
-            android:name=".NewActivity"
+            android:name=".CreatePlantStartActivity"
             android:exported="false" />
         <activity
             android:name=".Search"
             android:exported="false" />
         <activity
-            android:name=".Camera"
+            android:name=".CameraActivity"
             android:exported="false" />
         <activity
             android:name=".Settings"
@@ -56,10 +44,24 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
+        <activity
+            android:name="com.example.guguma.CreateUserUsernameActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.guguma.guguma_application.CreatePlantNameActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.guguma.guguma_application.CreatePlantNicknameActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.guguma.guguma_application.CreatePlantWaterActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.guguma.guguma_application.CreateUserActivity"
+            android:exported="false" />
 
+    </application>
 </manifest>

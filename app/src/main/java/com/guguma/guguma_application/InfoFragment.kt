@@ -1,13 +1,12 @@
 package com.guguma.guguma_application
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import android.content.Intent
+import androidx.recyclerview.widget.RecyclerView
 
 
 class InfoFragment : Fragment() {
@@ -27,9 +26,9 @@ class InfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         infoAdapter = InfoAdapter(requireContext()) { item ->
-            val intent = Intent(requireContext(), NewActivity::class.java) // NewActivity로 이동
-            intent.putExtra("itemName", item.name) // 필요한 데이터를 전달
-            startActivity(intent)
+//            val intent = Intent(requireContext(), NewActivity::class.java) // NewActivity로 이동
+//            intent.putExtra("itemName", item.name) // 필요한 데이터를 전달
+//            startActivity(intent)
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)

@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
-class testActivity : AppCompatActivity() {
+class CreatePlantStartActivity : AppCompatActivity() {
 
     private val STORAGE_PERMISSION_CODE = 1001 // 권한 코드 정의
 
@@ -24,7 +24,7 @@ class testActivity : AppCompatActivity() {
                 val data: Intent? = result.data
                 data?.data?.let { imageUri ->
                     // 이미지 Uri를 다른 Activity로 전달
-                    val intent = Intent(this, AddPlantActivity::class.java)
+//                    val intent = Intent(this, CreatePlantActivity::class.java)
                     intent.putExtra("imageUri", imageUri.toString()) // 이미지 URI를 Intent에 추가
                     startActivity(intent)
                 }
@@ -33,7 +33,7 @@ class testActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_test)
+        setContentView(R.layout.activity_create_plant_start)
 
 
         // 갤러리 버튼 설정
@@ -47,7 +47,7 @@ class testActivity : AppCompatActivity() {
         // 버튼 클릭 리스너 설정
         picAddButton.setOnClickListener {
             // 사진 촬영을 위한 액티비티로 이동
-            val intent = Intent(this, Camera::class.java)
+            val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
         }
     }
