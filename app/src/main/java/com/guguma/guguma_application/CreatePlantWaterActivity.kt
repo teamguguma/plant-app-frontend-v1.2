@@ -80,7 +80,7 @@ class CreatePlantWaterActivity : AppCompatActivity() {
         "name": "$plantName",
         "nickname": "$plantNickname",
         "waterInterval": $waterInterval,
-        "imageUri": "$imageUri",
+        "imageUri": "http://example.com/image.jpg",
         "userUuid": "$userUuid"
     }
     """.trimIndent()

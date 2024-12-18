@@ -1,5 +1,4 @@
 package com.guguma.guguma_application
-
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager

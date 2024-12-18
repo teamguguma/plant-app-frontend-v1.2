@@ -3,6 +3,8 @@ package com.guguma.guguma_application
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -13,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import java.io.ByteArrayOutputStream
 
 class CreatePlantStartActivity : AppCompatActivity() {
 
@@ -116,9 +119,40 @@ class CreatePlantStartActivity : AppCompatActivity() {
 
     // CreatePlantNameActivity로 이동
     private fun goToCreatePlantNameActivity(imageUri: Uri) {
-        val intent = Intent(this, CreatePlantNameActivity::class.java).apply {
-            putExtra("imageUri", imageUri.toString()) // 선택한 이미지 URI 전달
+        val compressedBytes = compressImageToByteArray(imageUri, 1024 * 1024) // 1MB 이하로 압축
+
+        if (compressedBytes != null) {
+            val intent = Intent(this, CreatePlantNameActivity::class.java).apply {
+                putExtra("imageBytes", compressedBytes) // 압축된 바이트 배열 전달
+            }
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, "이미지 압축에 실패했습니다.", Toast.LENGTH_SHORT).show()
         }
-        startActivity(intent)
+    }
+
+    // 이미지 압축 함수
+    private fun compressImageToByteArray(uri: Uri, maxSize: Int): ByteArray? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val originalBitmap = BitmapFactory.decodeStream(inputStream)
+
+            val outputStream = ByteArrayOutputStream()
+            var quality = 90 // 초기 압축 품질
+            var byteArray: ByteArray
+
+            do {
+                outputStream.reset()
+                originalBitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
+                byteArray = outputStream.toByteArray()
+                quality -= 10 // 압축 품질을 10씩 감소
+            } while (byteArray.size > maxSize && quality > 10)
+
+            outputStream.close()
+            byteArray
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 }

@@ -37,7 +37,7 @@ android {
 
         buildConfigField("String", "API_BASE_URL", "\"$baseUrl\"")
 
-        buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$localbaseUrl$/plants/recognize\"")//이름검색및이름저장
+        buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$localbaseUrl/plants/recognize\"")//이름검색및이름저장
         buildConfigField("String", "API_PLANT_DETECT", "\"$detectPath\"")
 
         buildConfigField("String", "API_USER_CREATE", "\"$localbaseUrl/users/create\"")

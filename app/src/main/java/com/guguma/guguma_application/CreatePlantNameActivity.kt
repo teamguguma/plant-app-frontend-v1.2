@@ -53,20 +53,18 @@ class CreatePlantNameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_plant_name)
 
-        val imageView = findViewById<ImageView>(R.id.plantImageView)
-        val byteArray = intent.getByteArrayExtra("capturedImage")
-
+        imageView = findViewById(R.id.plantImageView)
         plantNameEditText = findViewById(R.id.plantNameEditText)
         retryPhotoButton = findViewById(R.id.retryPhotoBtn)
         registerPlantButton = findViewById(R.id.registerPlantBtn)
-        loadingTextView = findViewById(R.id.loadingTextView) // XML에서 추가된 TextView와 연결
-        byteArray?.let {
-            val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
-            imageView.setImageBitmap(bitmap) // 이미지 표시
-        }
 
-        retryPhotoButton.setOnClickListener {
-            pickImageLauncher.launch("image/*")
+        val imageBytes = intent.getByteArrayExtra("imageBytes")
+
+        if (imageBytes != null) {
+            val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            imageView.setImageBitmap(bitmap) // 이미지를 화면에 표시
+        } else {
+            Toast.makeText(this, "이미지를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
         }
 
         registerPlantButton.setOnClickListener {
@@ -74,10 +72,11 @@ class CreatePlantNameActivity : AppCompatActivity() {
         }
     }
 
+    // Glide를 사용하여 이미지 표시
     private fun loadImage(uri: Uri) {
         Glide.with(this)
             .load(uri)
-            .apply(RequestOptions.circleCropTransform())
+            .apply(RequestOptions.centerCropTransform())
             .into(imageView)
     }
 
