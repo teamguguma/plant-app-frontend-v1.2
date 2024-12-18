@@ -3,6 +3,7 @@ package com.guguma.guguma_application
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
@@ -23,10 +24,8 @@ class CreatePlantStartActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val data: Intent? = result.data
                 data?.data?.let { imageUri ->
-                    // 이미지 Uri를 다른 Activity로 전달
-//                    val intent = Intent(this, CreatePlantActivity::class.java)
-                    intent.putExtra("imageUri", imageUri.toString()) // 이미지 URI를 Intent에 추가
-                    startActivity(intent)
+                    // 갤러리에서 선택된 이미지 URI를 CreatePlantNameActivity로 전달
+                    goToCreatePlantNameActivity(imageUri)
                 }
             }
         }
@@ -34,7 +33,6 @@ class CreatePlantStartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_plant_start)
-
 
         // 갤러리 버튼 설정
         val bringGallery: Button = findViewById(R.id.bringGalleryBtn)
@@ -71,7 +69,7 @@ class CreatePlantStartActivity : AppCompatActivity() {
             }
             else -> {
                 // 권한 요청 실행
-                requestPermissions(arrayOf(permission), 1000)
+                requestPermissions(arrayOf(permission), STORAGE_PERMISSION_CODE)
             }
         }
     }
@@ -82,7 +80,7 @@ class CreatePlantStartActivity : AppCompatActivity() {
             .setTitle("갤러리 권한 필요")
             .setMessage("갤러리에서 사진을 선택하려면 권한이 필요합니다.")
             .setPositiveButton("권한 허용") { _, _ ->
-                requestPermissions(arrayOf(permission), 1000)
+                requestPermissions(arrayOf(permission), STORAGE_PERMISSION_CODE)
             }
             .setNegativeButton("취소") { dialog, _ ->
                 dialog.dismiss()
@@ -102,6 +100,7 @@ class CreatePlantStartActivity : AppCompatActivity() {
         if (requestCode == STORAGE_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "저장소 권한이 허용되었습니다.", Toast.LENGTH_SHORT).show()
+                navigatePhotos()
             } else {
                 Toast.makeText(this, "저장소 권한이 필요합니다.", Toast.LENGTH_SHORT).show()
             }
@@ -115,4 +114,11 @@ class CreatePlantStartActivity : AppCompatActivity() {
         pickImageLauncher.launch(intent)
     }
 
+    // CreatePlantNameActivity로 이동
+    private fun goToCreatePlantNameActivity(imageUri: Uri) {
+        val intent = Intent(this, CreatePlantNameActivity::class.java).apply {
+            putExtra("imageUri", imageUri.toString()) // 선택한 이미지 URI 전달
+        }
+        startActivity(intent)
+    }
 }

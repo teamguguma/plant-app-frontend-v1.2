@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import okhttp3.Call
 import okhttp3.Callback
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -40,23 +39,16 @@ class IntroActivity : AppCompatActivity() {
      */
     private fun readUser(userUuid: String) {
         val url = BuildConfig.API_USER_READ // 서버 URL
-        // JSON 데이터 생성
-        val jsonObject = JSONObject()
-        jsonObject.put("userUuid", userUuid)
-
-        // RequestBody 생성
-        val requestBody = jsonObject.toString().toRequestBody("application/json".toMediaType())
-
+        // URL에 쿼리 파라미터 추가
+        val requestUrl = "$url?userUuid=$userUuid"
         // Request 객체 생성
         val request = Request.Builder()
-            .url(url)
-            .post(requestBody)
+            .url(requestUrl)
+            .post("".toRequestBody(null)) // 빈 Body
             .build()
 
-        // 비동기 네트워크 요청 실행
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                // 네트워크 오류 처리
                 runOnUiThread {
                     Log.e("IntroActivity", "Network Error", e)
                     moveToCreateUserActivity()

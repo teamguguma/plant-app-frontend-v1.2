@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -40,29 +39,31 @@ class CreatePlantNameActivity : AppCompatActivity() {
     private val recognizeUrl = "API_PLANT_RECOGNIZE" // 식물 인식 API URL
     private var imageUri: Uri? = null
 
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let {
-            imageUri = it
-            loadImage(it)
-            uploadImage(it)
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                imageUri = it
+                loadImage(it)
+                uploadImage(it)
+            }
         }
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_plant_name)
 
-        // CameraAcitivy에서 불러온 것
-        val plantName = intent.getStringExtra("plantName")
-        val imageUrl = intent.getStringExtra("imageUrl")
-        // plantName과 imageUrl을 사용해 화면에 표시
-        Log.d("CreatePlantNameActivity", "Plant Name: $plantName, Image URL: $imageUrl")
+        val imageView = findViewById<ImageView>(R.id.plantImageView)
+        val byteArray = intent.getByteArrayExtra("capturedImage")
 
-        imageView = findViewById(R.id.plantImageView)
         plantNameEditText = findViewById(R.id.plantNameEditText)
         retryPhotoButton = findViewById(R.id.retryPhotoBtn)
         registerPlantButton = findViewById(R.id.registerPlantBtn)
         loadingTextView = findViewById(R.id.loadingTextView) // XML에서 추가된 TextView와 연결
+        byteArray?.let {
+            val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
+            imageView.setImageBitmap(bitmap) // 이미지 표시
+        }
 
         retryPhotoButton.setOnClickListener {
             pickImageLauncher.launch("image/*")
@@ -94,7 +95,11 @@ class CreatePlantNameActivity : AppCompatActivity() {
 
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
-            .addFormDataPart("image", "uploaded_image.jpg", imageData.toRequestBody("image/jpeg".toMediaTypeOrNull()))
+            .addFormDataPart(
+                "image",
+                "uploaded_image.jpg",
+                imageData.toRequestBody("image/jpeg".toMediaTypeOrNull())
+            )
             .build()
 
         val request = Request.Builder()
@@ -106,7 +111,8 @@ class CreatePlantNameActivity : AppCompatActivity() {
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread {
                     loadingTextView.visibility = TextView.GONE // 로딩 상태 숨김
-                    Toast.makeText(this@CreatePlantNameActivity, "이미지 업로드 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CreatePlantNameActivity, "이미지 업로드 실패", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
