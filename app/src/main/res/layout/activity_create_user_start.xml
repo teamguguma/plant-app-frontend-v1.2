@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FEFEFE"
+    android:importantForAccessibility="yes"
+    android:padding="16sp">
+
+    <!-- 텍스트 설명 -->
+
+    <!-- 앱 로고 -->
+
+    <TextView
+        android:id="@+id/textWelcome"
+        android:layout_width="359sp"
+        android:layout_height="77sp"
+        android:layout_marginBottom="16sp"
+        android:contentDescription="새로운 식집사님 반갑습니다!"
+        android:fontFamily="@font/nanumbarungothicbold"
+        android:text="새로운 식집사님\n반갑습니다!"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toTopOf="@id/imageLogo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.65"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:contentDescription="식끌식끌과 함께 식물 키우기를 시작해봐요!"
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="식끌식끌과 함께 식물 키우기를 시작해봐요!"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.256"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textWelcome" />
+
+    <ImageView
+        android:id="@+id/imageLogo"
+        android:layout_width="175dp"
+        android:layout_height="176dp"
+        android:layout_marginTop="92dp"
+        android:contentDescription="앱 식끌식끌의 로고로 새싹이 난 동그란 씨앗에 얼굴이 그려져 있다"
+        android:src="@drawable/ic_guguma_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textWelcome" />
+
+    <LinearLayout
+        android:id="@+id/permissionChecklist"
+        android:layout_width="359dp"
+        android:layout_height="76dp"
+        android:layout_marginTop="324dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.65"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textWelcome">
+
+        <CheckBox
+            android:id="@+id/checkCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="카메라 권한 허용"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:id="@+id/checkGallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="갤러리 접근 권한 허용"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/ButtonStartUserNickname"
+        android:layout_width="354dp"
+        android:layout_height="73dp"
+        android:fontFamily="@font/nanumbarungothicbold"
+        android:importantForAccessibility="yes"
+        android:text="시작하기"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageLogo"
+        app:layout_constraintVertical_bias="0.817"
+        app:layout_constraintWidth_percent="0.8" />
+</androidx.constraintlayout.widget.ConstraintLayout>

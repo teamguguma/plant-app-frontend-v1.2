@@ -3,18 +3,11 @@ package com.guguma.guguma_application
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
+import androidx.fragment.app.Fragment
 import com.guguma.guguma_application.databinding.FragmentHomeBinding
 import okhttp3.*
 import org.json.JSONArray
@@ -23,14 +16,14 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guguma.guguma_application.dto.PlantDto
-import com.guguma.guguma_application.viewmodel.PlantViewModel
-import java.io.IOException
+
+//import com.guguma.guguma_application.viewmodel.PlantViewModel
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val plantViewModel: PlantViewModel by activityViewModels()
+//    private val plantViewModel: PlantViewModel by activityViewModels()
 
     companion object {
         const val REQUEST_ADD_PLANT = 1001 // AddPlantActivity의 요청 코드
@@ -43,13 +36,15 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         // LiveData를 observe하여 UI 업데이트
-        plantViewModel.plantList.observe(viewLifecycleOwner) { updatedPlantList ->
-            updateUI(updatedPlantList)
-        }
+//        plantViewModel.plantList.observe(viewLifecycleOwner) { updatedPlantList ->
+//            updateUI(updatedPlantList)
+//        }
 
         // 식물 추가 버튼 클릭 리스너
         binding.pBtn.setOnClickListener {
             val intent = Intent(activity, testActivity::class.java)
+        binding.plantBtn.setOnClickListener {
+            val intent = Intent(activity, CreatePlantStartActivity::class.java)
             startActivityForResult(intent, REQUEST_ADD_PLANT)
         }
 
@@ -72,6 +67,12 @@ class HomeFragment : Fragment() {
                 //val adapter = binding.plantListView.adapter as? PlantAdapter
                 plantViewModel.addPlant(newPlant) // ViewModel에 데이터 추가
             //adapter?.addItem(newPlant) // RecyclerView에 새 데이터 추가
+            if (newPlantName != null && newPlantNickname != null && newPlantImageUrl != null) {
+                val newPlant = PlantDto(newPlantName, newPlantNickname, newPlantImageUrl)
+                Log.d("HomeFragment", "Adding new plant: $newPlant")
+
+                // ViewModel에 데이터 추가 및 갱신 요청
+//                plantViewModel.addPlantAndRefresh(newPlant)
             }
         }
     }
