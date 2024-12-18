@@ -1,48 +1,74 @@
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="4dp"
-    card_view:cardBackgroundColor="@color/button"
-    android:padding="8dp">
+    android:layout_margin="5dp"
+    card_view:cardBackgroundColor="#f7f2f3"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="2dp"
+    card_view:contentPadding="4dp">
 
-<LinearLayout
-android:layout_width="match_parent"
-android:layout_height="100dp"
-android:orientation="horizontal"
-    android:gravity="center_vertical">
 
-<!-- 식물 이미지 -->
-<ImageView
-    android:id="@+id/plantImageView"
-    android:layout_width="70dp"
-    android:layout_height="70dp"
-    android:scaleType="centerCrop"
-    android:layout_marginStart="20dp"
-    android:layout_marginEnd="8dp" />
-
-<!-- 텍스트 레이아웃 -->
-<LinearLayout
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/plantNameTextView"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="16sp" />
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/plantNicknameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="13sp" />
-</LinearLayout>
-</LinearLayout>
+
+            <!-- 식물 이미지 -->
+            <ImageView
+                android:id="@+id/plantImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                tools:ignore="MissingConstraints" />
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/plantImageView"
+            android:layout_toRightOf="@+id/plantImageView">
+
+                <TextView
+                    android:id="@+id/plantNameTextView"
+                    style="@style/TextAppearance.MaterialComponents.Headline3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="리스트뷰"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/plantNicknameTextView"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/plantNameTextView"
+                    android:text="식물애칭 입력란"
+                    android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <!-- 버튼 -->
+        <Button
+            android:id="@+id/manageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/RelativeLayout2"
+            android:layout_toRightOf="@+id/RelativeLayout2"
+            android:text="관리"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
     </androidx.cardview.widget.CardView>
+

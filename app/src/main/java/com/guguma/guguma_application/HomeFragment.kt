@@ -9,6 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.guguma.guguma_application.databinding.FragmentHomeBinding
+import okhttp3.*
+import org.json.JSONArray
+import android.util.Log
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.guguma.guguma_application.dto.PlantDto
 
 //import com.guguma.guguma_application.viewmodel.PlantViewModel
@@ -35,6 +41,8 @@ class HomeFragment : Fragment() {
 //        }
 
         // 식물 추가 버튼 클릭 리스너
+        binding.pBtn.setOnClickListener {
+            val intent = Intent(activity, testActivity::class.java)
         binding.plantBtn.setOnClickListener {
             val intent = Intent(activity, CreatePlantStartActivity::class.java)
             startActivityForResult(intent, REQUEST_ADD_PLANT)
@@ -48,10 +56,17 @@ class HomeFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_ADD_PLANT && resultCode == Activity.RESULT_OK) {
+            // AddPlantActivity에서 전달된 데이터
+            val plantId = data?.getLongExtra("plantId", -1L) ?: -1L
             val newPlantName = data?.getStringExtra("newPlantName")
             val newPlantNickname = data?.getStringExtra("newPlantNickname")
             val newPlantImageUrl = data?.getStringExtra("newPlantImageUrl")
 
+            if (plantId != -1L && !newPlantName.isNullOrEmpty() && !newPlantNickname.isNullOrEmpty() && !newPlantImageUrl.isNullOrEmpty()) {
+                val newPlant = PlantDto(plantId, newPlantName, newPlantNickname, newPlantImageUrl)
+                //val adapter = binding.plantListView.adapter as? PlantAdapter
+                plantViewModel.addPlant(newPlant) // ViewModel에 데이터 추가
+            //adapter?.addItem(newPlant) // RecyclerView에 새 데이터 추가
             if (newPlantName != null && newPlantNickname != null && newPlantImageUrl != null) {
                 val newPlant = PlantDto(newPlantName, newPlantNickname, newPlantImageUrl)
                 Log.d("HomeFragment", "Adding new plant: $newPlant")
@@ -64,13 +79,13 @@ class HomeFragment : Fragment() {
 
     // UI 업데이트 메서드
     private fun updateUI(plantList: MutableList<PlantDto>) {
-        val adapter = binding.plantListView.adapter as? PlantAdapter
-        if (adapter == null) {
-            // 어댑터가 없으면 새로 생성
-            binding.plantListView.adapter = PlantAdapter(requireContext(), plantList)
+        if (binding.plantListView.adapter == null) {
+            binding.plantListView.layoutManager = LinearLayoutManager(requireContext())
+            binding.plantListView.adapter = PlantAdapter(requireContext(), plantList) { plantId ->
+                plantViewModel.deletePlant(plantId)
+            }
         } else {
-            // 어댑터가 이미 존재하면 데이터 갱신
-            adapter.updateData(plantList)
+            (binding.plantListView.adapter as PlantAdapter).updateData(plantList) // 어댑터 갱신
         }
     }
 

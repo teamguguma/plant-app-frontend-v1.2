@@ -37,10 +37,17 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.nav_home -> {
                     replaceFragment(HomeFragment())
+                    //item.setIcon(R.drawable.) 아이콘 바꾸기 효과 주려고 도전 중
+                    true
+                }
                     true
                 }
                 R.id.nav_camera -> {
                     startActivity(Intent(this, CameraActivity::class.java))
+                    true
+                    //카메라 화면 처리 (카메라 프래그먼트가 아닌 카메라 액티비티로 이동)
+                    val intent = Intent(this, Camera::class.java)  // CameraActivity 실행
+                    startActivity(intent)
                     true
                 }
                 R.id.nav_info -> {
