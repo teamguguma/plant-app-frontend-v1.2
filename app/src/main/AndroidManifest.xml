@@ -1,10 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <!--    진동, 카메라, 갤러리, 인터넷-->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
@@ -28,16 +27,15 @@
 
         <activity
             android:name=".CreatePlantStartActivity"
-            android:name=".DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".testActivity"
+            android:name=".CreatePlantNameActivity"
             android:exported="false" />
         <activity
-            android:name=".AddPlantActivity"
+            android:name=".CreatePlantNicknameActivity"
             android:exported="false" />
         <activity
-            android:name=".NewActivity"
+            android:name=".CreatePlantWaterActivity"
             android:exported="false" />
         <activity
             android:name=".Search"
@@ -63,18 +61,7 @@
             android:name="com.example.guguma.CreateUserUsernameActivity"
             android:exported="false" />
         <activity
-            android:name="com.guguma.guguma_application.CreatePlantNameActivity"
+            android:name=".CreateUserActivity"
             android:exported="false" />
-        <activity
-            android:name="com.guguma.guguma_application.CreatePlantNicknameActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.guguma.guguma_application.CreatePlantWaterActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.guguma.guguma_application.CreateUserActivity"
-            android:exported="false" />
-
     </application>
-
 </manifest>
