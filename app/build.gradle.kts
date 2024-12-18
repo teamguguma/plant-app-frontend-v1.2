@@ -45,17 +45,11 @@ android {
 
 
         buildConfigField("String", "API_BASE_URL", "\"$baseUrl\"")
-
         buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$localbaseUrl/plants/recognize\"")//이름검색및이름저장
         buildConfigField("String", "API_PLANT_DETECT", "\"$detectPath\"")
 
-
-
-
         buildConfigField("String", "API_PLANT_LIST", "\"$localbaseUrl$plantlistPath\"")    //위에 플랜트 리스트 불러오려고 했던 놈이랑 같음
         buildConfigField("String", "API_PLANT_DELETE", "\"$localbaseUrl/plants/delete\"") //플랜트를 삭제 하려고 위에했던 놈이랑 같음
-// 이 아래가 보경이 이 위가 나
-
         buildConfigField("String", "API_USER_CREATE", "\"$localbaseUrl/users/create\"")
         buildConfigField("String", "API_USER_READ", "\"$localbaseUrl/users/read\"")
         buildConfigField("String", "API_USER_DELETE", "\"$localbaseUrl/users/delete\"")
