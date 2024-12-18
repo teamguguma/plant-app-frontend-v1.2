@@ -198,7 +198,7 @@ class AddPlantActivity : AppCompatActivity() {
             return
         }
 
-        val jsonBody = """
+        val  jsonBody = """
         {
             "name": "$plantName",
             "nickname": "$plantNickname",

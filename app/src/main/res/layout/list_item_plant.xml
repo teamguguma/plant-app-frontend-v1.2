@@ -17,6 +17,18 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
+        <!-- 체크박스 -->
+        <CheckBox
+            android:id="@+id/plantcheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone" /> <!-- 기본적으로 숨김 -->
+
 
             <!-- 식물 이미지 -->
             <ImageView
@@ -26,9 +38,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"
+                android:layout_toRightOf="@+id/plantcheckBox"/>
 
         <RelativeLayout
             android:id="@+id/RelativeLayout2"
@@ -61,7 +72,7 @@
 
         <!-- 버튼 -->
         <Button
-            android:id="@+id/manageButton"
+            android:id="@+id/delButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/RelativeLayout2"

@@ -3,7 +3,6 @@ package com.guguma.guguma_application
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guguma.guguma_application.dto.PlantDto
+import com.guguma.guguma_application.viewmodel.PlantViewModel
 
 //import com.guguma.guguma_application.viewmodel.PlantViewModel
 
@@ -23,7 +23,7 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-//    private val plantViewModel: PlantViewModel by activityViewModels()
+     private val plantViewModel: PlantViewModel by activityViewModels()
 
     companion object {
         const val REQUEST_ADD_PLANT = 1001 // AddPlantActivity의 요청 코드
@@ -35,15 +35,21 @@ class HomeFragment : Fragment() {
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        // RecyclerView 초기화: 빈 어댑터로 설정
+        binding.plantListView.layoutManager = LinearLayoutManager(requireContext())
+        binding.plantListView.adapter = PlantAdapter(requireContext(), mutableListOf()) { plantId ->
+            plantViewModel.deletePlant(plantId)
+        }
+
         // LiveData를 observe하여 UI 업데이트
-//        plantViewModel.plantList.observe(viewLifecycleOwner) { updatedPlantList ->
-//            updateUI(updatedPlantList)
-//        }
+        plantViewModel.plantList.observe(viewLifecycleOwner) { updatedPlantList ->
+            updateUI(updatedPlantList)
+        }
 
         // 식물 추가 버튼 클릭 리스너
+       // binding.pBtn.setOnClickListener {
+            //val intent = Intent(activity, CreatePlantStartActivity::class.java)
         binding.pBtn.setOnClickListener {
-            val intent = Intent(activity, testActivity::class.java)
-        binding.plantBtn.setOnClickListener {
             val intent = Intent(activity, CreatePlantStartActivity::class.java)
             startActivityForResult(intent, REQUEST_ADD_PLANT)
         }
@@ -51,6 +57,13 @@ class HomeFragment : Fragment() {
         return binding.root
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        // Fragment가 다시 활성화될 때 데이터 새로고침
+        plantViewModel.fetchPlantsFromServer() // 서버에서 최신 데이터를 가져옴
+    }
+
 
     // AddPlantActivity에서 돌아왔을 때 처리
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -66,13 +79,7 @@ class HomeFragment : Fragment() {
                 val newPlant = PlantDto(plantId, newPlantName, newPlantNickname, newPlantImageUrl)
                 //val adapter = binding.plantListView.adapter as? PlantAdapter
                 plantViewModel.addPlant(newPlant) // ViewModel에 데이터 추가
-            //adapter?.addItem(newPlant) // RecyclerView에 새 데이터 추가
-            if (newPlantName != null && newPlantNickname != null && newPlantImageUrl != null) {
-                val newPlant = PlantDto(newPlantName, newPlantNickname, newPlantImageUrl)
-                Log.d("HomeFragment", "Adding new plant: $newPlant")
-
-                // ViewModel에 데이터 추가 및 갱신 요청
-//                plantViewModel.addPlantAndRefresh(newPlant)
+                //adapter?.addItem(newPlant) // RecyclerView에 새 데이터 추가
             }
         }
     }

@@ -37,20 +37,24 @@ android {
         // 기본 URL 및 엔드포인트를 BuildConfig에 추가
         val baseUrl = localProperties.getProperty("api.aws.base.url", "http://localhost:8080/api")
         val localbaseUrl = localProperties.getProperty("api.local.base.url")
+
+        val plantlistPath = localProperties.getProperty("api.key.plant.plantlist", "/plants/user/1") // 플랜트 리스트를 불러오려고 일단 유저가 하드코딩이니 유저1의 목록을 불러올라고
+        val plantlistdeletePath = localProperties.getProperty("api.key.plant.plantlistdelete", "/plants/delete")//플랜트를 삭제하려고 이강희가 만든 것,,
+// 이 위가 나 아래가 보경이 ...
         val detectPath = localProperties.getProperty("api.plant.detect")
 
-        buildConfigField("String", "API_BASE_URL", "\"$baseUrl\"")
 
+        buildConfigField("String", "API_BASE_URL", "\"$baseUrl\"")
         buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$localbaseUrl/plants/recognize\"")//이름검색및이름저장
         buildConfigField("String", "API_PLANT_DETECT", "\"$detectPath\"")
 
+        buildConfigField("String", "API_PLANT_LIST", "\"$localbaseUrl$plantlistPath\"")    //위에 플랜트 리스트 불러오려고 했던 놈이랑 같음
+        buildConfigField("String", "API_PLANT_DELETE", "\"$localbaseUrl/plants/delete\"") //플랜트를 삭제 하려고 위에했던 놈이랑 같음
         buildConfigField("String", "API_USER_CREATE", "\"$localbaseUrl/users/create\"")
         buildConfigField("String", "API_USER_READ", "\"$localbaseUrl/users/read\"")
         buildConfigField("String", "API_USER_DELETE", "\"$localbaseUrl/users/delete\"")
-
-        buildConfigField("String", "API_PLANT_LIST", "\"$localbaseUrl\"")
-        buildConfigField("String", "API_PLANT_DELETE", "\"$localbaseUrl\"")
         buildConfigField("String", "API_PLANT_CREATE", "\"$localbaseUrl/plants/create\"")
+
 
     }
 
@@ -89,6 +93,11 @@ dependencies {
     implementation ("androidx.camera:camera-lifecycle:$camerax_version")
     implementation ("androidx.camera:camera-view:$camerax_version")
 
+    // OkHttp 라이브러리
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
+    // HttpLoggingInterceptor 추가
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
     implementation("com.google.code.gson:gson:2.11.0")
