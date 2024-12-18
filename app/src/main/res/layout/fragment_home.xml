@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
+    <!-- 첫 번째 컨테이너 -->
     <LinearLayout
-        android:id="@+id/containerLayout"
+        android:id="@+id/home_containerLayout1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <!-- 식물 추가 버튼 -->
         <Button
@@ -22,16 +27,40 @@
             android:background="@color/black"
             android:textColor="@color/white"
             android:gravity="center"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/plantBtnString"/>
 
+        <ImageButton
+            android:id="@+id/watercheck_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/back_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="25dp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_watercheck"/>
+
+    </LinearLayout>
+
+    <!-- 두 번째 컨테이너 -->
+    <LinearLayout
+        android:id="@+id/home_containerLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/home_containerLayout1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/plantListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
     </LinearLayout>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,7 +35,7 @@ android {
         val registerPath = localProperties.getProperty("api.key.plant.register", "/plants/register")
         val localbaseUrl = localProperties.getProperty("api.local.base.url")
         val plantlistPath = localProperties.getProperty("api.key.plant.plantlist", "/plants/user/1")
-        val plantlistdeletePath = localProperties.getProperty("api.key.plant.plantlistdelete", "/plants/{id}")
+        val plantlistdeletePath = localProperties.getProperty("api.key.plant.plantlistdelete", "/plants/delete")
 
         buildConfigField("String", "API_BASE_URL", "\"$baseUrl\"")
         buildConfigField("String", "API_PLANT_DETECT", "\"$detectPath\"")
@@ -44,7 +44,7 @@ android {
         buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$localbaseUrl$recognizePath\"")
         buildConfigField("String", "API_PLANT_REGISTER", "\"$localbaseUrl$registerPath\"")
         buildConfigField("String", "API_PLANT_LIST", "\"$localbaseUrl$plantlistPath\"")
-        buildConfigField("String", "API_PLANT_DELETE", "\"$localbaseUrl$plantlistdeletePath\"")
+        buildConfigField("String", "API_PLANT_DELETE", "\"$localbaseUrl/plants/delete\"")
     }
 
     buildFeatures {
@@ -77,6 +77,11 @@ android {
 
 dependencies {
 
+    // OkHttp 라이브러리
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
+    // HttpLoggingInterceptor 추가
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
     implementation("com.google.code.gson:gson:2.11.0")

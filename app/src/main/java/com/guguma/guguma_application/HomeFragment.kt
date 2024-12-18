@@ -42,6 +42,12 @@ class HomeFragment : Fragment() {
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        // RecyclerView 초기화: 빈 어댑터로 설정
+        binding.plantListView.layoutManager = LinearLayoutManager(requireContext())
+        binding.plantListView.adapter = PlantAdapter(requireContext(), mutableListOf()) { plantId ->
+            plantViewModel.deletePlant(plantId)
+        }
+
         // LiveData를 observe하여 UI 업데이트
         plantViewModel.plantList.observe(viewLifecycleOwner) { updatedPlantList ->
             updateUI(updatedPlantList)
@@ -57,6 +63,13 @@ class HomeFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Fragment가 다시 활성화될 때 데이터 새로고침
+        plantViewModel.fetchPlantsFromServer() // 서버에서 최신 데이터를 가져옴
+    }
+
+
     // AddPlantActivity에서 돌아왔을 때 처리
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -71,7 +84,7 @@ class HomeFragment : Fragment() {
                 val newPlant = PlantDto(plantId, newPlantName, newPlantNickname, newPlantImageUrl)
                 //val adapter = binding.plantListView.adapter as? PlantAdapter
                 plantViewModel.addPlant(newPlant) // ViewModel에 데이터 추가
-            //adapter?.addItem(newPlant) // RecyclerView에 새 데이터 추가
+                //adapter?.addItem(newPlant) // RecyclerView에 새 데이터 추가
             }
         }
     }

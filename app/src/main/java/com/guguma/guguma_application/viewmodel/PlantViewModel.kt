@@ -26,7 +26,7 @@ class PlantViewModel : ViewModel() {
     }
 
     // 서버에서 식물 목록 가져오기
-    private fun fetchPlantsFromServer() {
+     fun fetchPlantsFromServer() {
         val request = Request.Builder()
             .url(BuildConfig.API_PLANT_LIST) // 서버 URL
             .build()
