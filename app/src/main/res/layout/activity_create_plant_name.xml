@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:padding="16dp"
-            android:text="식물 이름"
+            android:text="식물 이름을 작성해주세요"
             android:textColor="@android:color/black"
             android:textSize="20sp" />
 
@@ -51,18 +51,20 @@
             android:textSize="16sp" />
 
         <Button
+            android:id="@+id/registerPlantBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="닉네임 설정으로 넘어가기" />
+
+        <Button
             android:id="@+id/retryPhotoBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="다시 촬영 또는 사진 선택" />
 
-        <Button
-            android:id="@+id/registerPlantBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="다음" />
+
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
