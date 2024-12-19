@@ -55,7 +55,7 @@
     <LinearLayout
         android:id="@+id/permissionChecklist"
         android:layout_width="359dp"
-        android:layout_height="76dp"
+        android:layout_height="100dp"
         android:layout_marginTop="324dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -65,15 +65,21 @@
 
         <CheckBox
             android:id="@+id/checkCamera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:minHeight="48dp"
+            android:minWidth="48dp"
+            android:padding="8dp"
             android:text="카메라 권한 허용"
             android:textSize="18sp" />
 
         <CheckBox
             android:id="@+id/checkGallery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:padding="8dp"
             android:text="갤러리 접근 권한 허용"
             android:textSize="18sp" />
     </LinearLayout>
@@ -88,9 +94,9 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintHorizontal_bias="0.72"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageLogo"
-        app:layout_constraintVertical_bias="0.817"
+        app:layout_constraintVertical_bias="0.885"
         app:layout_constraintWidth_percent="0.8" />
 </androidx.constraintlayout.widget.ConstraintLayout>
