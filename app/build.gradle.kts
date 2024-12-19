@@ -42,6 +42,8 @@ android {
         buildConfigField("String", "API_PLANT_LIST_TEMPLATE", "\"$baseUrl/plants/user/{userId}\"")
         buildConfigField("String", "API_PLANT_CREATE", "\"$baseUrl/plants/create\"") // 식물 추가
 
+        buildConfigField("String", "API_IMAGE_UPLOAD", "\"$baseUrl/images/upload\"") // 이미지 awsS3 업로드
+
         buildConfigField("String", "API_USER_CREATE", "\"$baseUrl/users/create\"")
         buildConfigField("String", "API_USER_READ", "\"$baseUrl/users/read\"") // 앱 실행시켰을때 신규/기존 확인용
         buildConfigField("String", "API_USER_DELETE", "\"$baseUrl/users/delete\"")
