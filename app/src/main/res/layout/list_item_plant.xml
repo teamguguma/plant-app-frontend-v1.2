@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    card_view:cardBackgroundColor="#f7f2f3"
-    card_view:cardCornerRadius="12dp"
-    card_view:cardElevation="2dp"
-    card_view:contentPadding="4dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp">
 
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
@@ -20,66 +21,63 @@
         <!-- 체크박스 -->
         <CheckBox
             android:id="@+id/plantcheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:visibility="gone" /> <!-- 기본적으로 숨김 -->
 
 
             <!-- 식물 이미지 -->
             <ImageView
                 android:id="@+id/plantImageView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                tools:ignore="MissingConstraints"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toEndOf="@+id/plantcheckBox"
+                app:layout_constraintTop_toTopOf="parent"
                 android:layout_toRightOf="@+id/plantcheckBox"/>
-
-        <RelativeLayout
-            android:id="@+id/RelativeLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/plantImageView"
-            android:layout_toRightOf="@+id/plantImageView">
+        
 
                 <TextView
                     android:id="@+id/plantNameTextView"
                     style="@style/TextAppearance.MaterialComponents.Headline3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
+                    android:layout_marginHorizontal="12dp"
+                    app:layout_constraintEnd_toStartOf="@+id/delButton"
+                    app:layout_constraintStart_toEndOf="@+id/plantImageView"
+                    app:layout_constraintTop_toTopOf="@+id/plantImageView"
                     android:text="리스트뷰"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    tools:ignore="MissingConstraints" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/plantNicknameTextView"
-                    style="@style/TextAppearance.MaterialComponents.Subtitle2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/plantNameTextView"
-                    android:text="식물애칭 입력란"
-                    android:textSize="15sp" />
-
-        </RelativeLayout>
-
-        <!-- 버튼 -->
+            <!-- 버튼 -->
         <Button
             android:id="@+id/delButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/RelativeLayout2"
-            android:layout_toRightOf="@+id/RelativeLayout2"
-            android:text="관리"
-            android:textColor="@android:color/white" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="삭제"
+            android:textColor="@android:color/white"/>
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/plantNicknameTextView"
+                    style="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    app:layout_constraintEnd_toEndOf="@+id/plantNameTextView"
+                    app:layout_constraintStart_toStartOf="@+id/plantNameTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/plantNameTextView"
+                    android:text="식물애칭 입력란"
+                    android:textSize="15sp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+        
+    
+    
+    </layout>
 
