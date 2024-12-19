@@ -31,15 +31,16 @@ android {
         }
 
         // 기본 URL 및 엔드포인트를 BuildConfig에 추가
-        val baseUrl = localProperties.getProperty("api.local.base.url", "http://localhost:8080/api")
+        val baseUrl = localProperties.getProperty("api.ngrok.base.url", "http://localhost:8080/api")
         val detectPath = localProperties.getProperty("api.plant.detect")
 
-        buildConfigField("String", "API_PLANT_DETECT", "\"$detectPath\"") // 식물위치인식(aws에 따로 서버)
-        buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$baseUrl/plants/recognize\"") // 식물이름검색
-        // 플랜트 리스트를 불러오려고 일단 유저가 하드코딩이니 유저1의 목록을 불러올라고
-        buildConfigField("String", "API_PLANT_LIST", "\"$baseUrl/plants/user/1\"")
-        buildConfigField("String", "API_PLANT_DELETE", "\"$baseUrl/plants/delete\"") // 식물 데이터 삭제
-        buildConfigField("String", "API_PLANT_CREATE", "\"$baseUrl/plants/create\"")
+        buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")
+
+        buildConfigField("String", "API_PLANT_DETECT", "\"$detectPath\"") // 식물 위치인식(aws에 따로 서버)
+        buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$baseUrl/plants/recognize\"") // 식물 이름인식
+        buildConfigField("String", "API_PLANT_DELETE_TEMPLATE", "\"$baseUrl/plants/delete/{id}\"")
+        buildConfigField("String", "API_PLANT_LIST_TEMPLATE", "\"$baseUrl/plants/user/{userId}\"")
+        buildConfigField("String", "API_PLANT_CREATE", "\"$baseUrl/plants/create\"") // 식물 추가
 
         buildConfigField("String", "API_USER_CREATE", "\"$baseUrl/users/create\"")
         buildConfigField("String", "API_USER_READ", "\"$baseUrl/users/read\"") // 앱 실행시켰을때 신규/기존 확인용
@@ -82,6 +83,8 @@ android {
 
 val camerax_version = "1.3.0"
 dependencies {
+    implementation ("androidx.fragment:fragment-ktx:1.6.1")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     // CameraX (최신 BOM 사용)
     implementation ("androidx.camera:camera-core:$camerax_version")
     implementation ("androidx.camera:camera-camera2:$camerax_version")
@@ -107,6 +110,10 @@ dependencies {
     implementation("androidx.camera:camera-lifecycle:1.4.0")
     implementation("androidx.camera:camera-view:1.4.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.9.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")

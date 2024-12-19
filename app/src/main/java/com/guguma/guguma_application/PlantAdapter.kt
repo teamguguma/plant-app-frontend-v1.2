@@ -8,23 +8,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.guguma.guguma_application.dto.PlantDto
-import androidx.recyclerview.widget.RecyclerView
 import okhttp3.Call
 import okhttp3.Callback
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 
@@ -134,8 +130,7 @@ class PlantAdapter(
 
 
     private fun deletePlantFromServer(plantId: Long, callback: (Boolean) -> Unit) {
-        val BASE_URL = BuildConfig.API_PLANT_DELETE ?: throw IllegalArgumentException("API URL이 null입니다.")
-        val deleteUrl = "$BASE_URL/$plantId" // 서버의 DELETE API URL
+        val deleteUrl = BuildConfig.API_PLANT_DELETE_TEMPLATE.replace("{id}", plantId.toString()) // 동적 URL 생성
 
         // OkHttpClient에 HttpLoggingInterceptor 추가
         val client = OkHttpClient.Builder()
@@ -153,22 +148,20 @@ class PlantAdapter(
             override fun onFailure(call: Call, e: IOException) {
                 (context as Activity).runOnUiThread {
                     Log.e("DeleteDebug", "Request failed: ${e.message}")
-                    Toast.makeText(context, "삭제 바나나: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "삭제 실패: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
                 callback(false) // 실패 시 false 반환
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val responseBodyString = response.body?.string() // 백그라운드 스레드에서 처리
                 (context as Activity).runOnUiThread {
                     Log.d("DeleteDebug", "Response Code: ${response.code}")
-                    Log.d("DeleteDebug", "Response Body: $responseBodyString")
                     if (response.isSuccessful) {
                         Log.d("DeleteDebug", "Delete successful")
                         callback(true) // 성공 여부 반환
                     } else {
                         Log.e("DeleteDebug", "Delete failed: ${response.message}")
-                        Toast.makeText(context, "삭제 사과", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "삭제 실패", Toast.LENGTH_SHORT).show()
                         callback(false)
                     }
                 }
