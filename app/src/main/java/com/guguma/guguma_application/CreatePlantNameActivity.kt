@@ -38,6 +38,7 @@ class CreatePlantNameActivity : AppCompatActivity() {
     private val okHttpClient = OkHttpClient()
     private val recognizeUrl = "API_PLANT_RECOGNIZE" // 식물 인식 API URL
     private var imageUri: Uri? = null
+    private var imagePath: String? = null // 파일 경로 저장
 
     private val pickImageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -48,27 +49,19 @@ class CreatePlantNameActivity : AppCompatActivity() {
             }
         }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_plant_name)
 
-        imageView = findViewById(R.id.plantImageView)
-        plantNameEditText = findViewById(R.id.plantNameEditText)
-        retryPhotoButton = findViewById(R.id.retryPhotoBtn)
-        registerPlantButton = findViewById(R.id.registerPlantBtn)
+        val imageUrl = intent.getStringExtra("imageUrl")
 
-        val imageBytes = intent.getByteArrayExtra("imageBytes")
-
-        if (imageBytes != null) {
-            val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-            imageView.setImageBitmap(bitmap) // 이미지를 화면에 표시
+        if (!imageUrl.isNullOrEmpty()) {
+            // Glide로 이미지 로드
+            Glide.with(this)
+                .load(imageUrl)
+                .into(findViewById(R.id.plantImageView))
         } else {
-            Toast.makeText(this, "이미지를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
-        }
-
-        registerPlantButton.setOnClickListener {
-            goToNicknameActivity()
+            Toast.makeText(this, "이미지 URL을 받지 못했습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -135,8 +128,9 @@ class CreatePlantNameActivity : AppCompatActivity() {
         }
 
         val intent = Intent(this, CreatePlantNicknameActivity::class.java).apply {
+            val imageUrl = intent.getStringExtra("imageUrl")
             putExtra("plantName", plantName)
-            putExtra("imageUri", imageUri.toString())
+            putExtra("imagePath", imageUrl) // 이미지 파일 경로 전달
         }
         startActivity(intent)
     }

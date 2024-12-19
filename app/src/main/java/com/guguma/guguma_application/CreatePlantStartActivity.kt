@@ -15,11 +15,21 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 class CreatePlantStartActivity : AppCompatActivity() {
 
     private val STORAGE_PERMISSION_CODE = 1001 // 권한 코드 정의
+    private val client = OkHttpClient() // OkHttpClient 정의
 
     // 이미지 선택 결과를 처리할 pickImageLauncher 정의
     private val pickImageLauncher: ActivityResultLauncher<Intent> =
@@ -27,8 +37,8 @@ class CreatePlantStartActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val data: Intent? = result.data
                 data?.data?.let { imageUri ->
-                    // 갤러리에서 선택된 이미지 URI를 CreatePlantNameActivity로 전달
-                    goToCreatePlantNameActivity(imageUri)
+                    // 갤러리에서 선택된 이미지 URI를 서버로 업로드
+                    uploadImageToServer(imageUri)
                 }
             }
         }
@@ -117,15 +127,57 @@ class CreatePlantStartActivity : AppCompatActivity() {
         pickImageLauncher.launch(intent)
     }
 
-    // CreatePlantNameActivity로 이동
-    private fun goToCreatePlantNameActivity(imageUri: Uri) {
+    // 이미지 서버 업로드 함수
+    private fun uploadImageToServer(imageUri: Uri) {
         val compressedBytes = compressImageToByteArray(imageUri, 1024 * 1024) // 1MB 이하로 압축
 
         if (compressedBytes != null) {
-            val intent = Intent(this, CreatePlantNameActivity::class.java).apply {
-                putExtra("imageBytes", compressedBytes) // 압축된 바이트 배열 전달
-            }
-            startActivity(intent)
+            val requestBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart(
+                    "image",
+                    "image.jpg",
+                    compressedBytes.toRequestBody("image/jpeg".toMediaTypeOrNull())
+                )
+                .build()
+
+            val request = Request.Builder()
+                .url(BuildConfig.API_IMAGE_UPLOAD) // 서버 업로드 URL
+                .post(requestBody)
+                .build()
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@CreatePlantStartActivity,
+                            "이미지 업로드 실패: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    if (response.isSuccessful) {
+                        val fileUrl = response.body?.string().orEmpty()
+                        runOnUiThread {
+                            val intent =
+                                Intent(this@CreatePlantStartActivity, CreatePlantNameActivity::class.java).apply {
+                                    putExtra("imageUrl", fileUrl) // 업로드된 이미지 URL 전달
+                                }
+                            startActivity(intent)
+                        }
+                    } else {
+                        runOnUiThread {
+                            Toast.makeText(
+                                this@CreatePlantStartActivity,
+                                "서버 오류: ${response.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+            })
         } else {
             Toast.makeText(this, "이미지 압축에 실패했습니다.", Toast.LENGTH_SHORT).show()
         }
