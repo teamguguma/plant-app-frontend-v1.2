@@ -29,29 +29,17 @@
             android:name=".CreatePlantStartActivity"
             android:exported="false" />
         <activity
-            android:name=".CreatePlantNameActivity"
+            android:name=".AddPlantActivity"
             android:exported="false" />
+
         <activity
-            android:name=".CreatePlantNicknameActivity"
+            android:name=".Camera"
             android:exported="false" />
-        <activity
-            android:name=".CreatePlantWaterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Search"
-            android:exported="false" />
-        <activity
-            android:name=".CameraActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Settings"
-            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-        <activity
-            android:name=".DetailActivity"
-            android:exported="false" />
+
         <activity
             android:name=".IntroActivity"
             android:exported="true">
@@ -60,9 +48,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.example.guguma.CreateUserUsernameActivity"
-            android:exported="false" />
         <activity
             android:name=".CreateUserActivity"
             android:exported="false" />

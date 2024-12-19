@@ -1,26 +1,27 @@
 package com.guguma.guguma_application
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.BaseAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.guguma.guguma_application.dto.PlantDto
+import androidx.recyclerview.widget.RecyclerView
 import okhttp3.Call
 import okhttp3.Callback
-import okhttp3.OkHttpClient
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
 import okhttp3.Response
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 
@@ -90,7 +91,7 @@ class PlantAdapter(
                 plant.isSelected = !plant.isSelected
                 holder.checkBox.isChecked = plant.isSelected
             } else {
-                val intent = Intent(context, DetailActivity::class.java).apply {
+                val intent = Intent(context, AddPlantActivity::class.java).apply {
                     putExtra("plantName", plant.name)
                     putExtra("plantNickname", plant.nickname)
                     putExtra("plantImageUrl", plant.imageUrl)
@@ -100,77 +101,14 @@ class PlantAdapter(
         }
 
 
-        holder.itemView.findViewById<Button>(R.id.delButton).setOnClickListener {
-            // 모달 창 띄우기
-            AlertDialog.Builder(context)
-                .setTitle("삭제 확인")
-                .setMessage("삭제하시겠습니까?")
-                .setPositiveButton("확인") { _, _ ->
-                    // 확인 버튼 클릭 시 삭제 요청
-                    deletePlantFromServer(plant.id) { success ->
-                        if (success) {
-                            // 성공 시 RecyclerView에서 삭제
-                            removeItem(position)
-                            Toast.makeText(context, "삭제되었습니다.", Toast.LENGTH_SHORT).show()
-                        } else {
-                            // 실패 시 사용자에게 알림
-                            Toast.makeText(context, "삭제 실패. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-                .setNegativeButton("취소") { dialog, _ ->
-                    // 취소 버튼 클릭 시 다이얼로그 닫기
-                    dialog.dismiss()
-                }
-                .show()
-        }
-
     }
 
 
 
-    private fun deletePlantFromServer(plantId: Long, callback: (Boolean) -> Unit) {
-        val deleteUrl = BuildConfig.API_PLANT_DELETE_TEMPLATE.replace("{id}", plantId.toString()) // 동적 URL 생성
-
-        // OkHttpClient에 HttpLoggingInterceptor 추가
-        val client = OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            })
-            .build()
-
-        val request = Request.Builder()
-            .url(deleteUrl)
-            .delete() // HTTP DELETE 요청
-            .build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                (context as Activity).runOnUiThread {
-                    Log.e("DeleteDebug", "Request failed: ${e.message}")
-                    Toast.makeText(context, "삭제 실패: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-                callback(false) // 실패 시 false 반환
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                (context as Activity).runOnUiThread {
-                    Log.d("DeleteDebug", "Response Code: ${response.code}")
-                    if (response.isSuccessful) {
-                        Log.d("DeleteDebug", "Delete successful")
-                        callback(true) // 성공 여부 반환
-                    } else {
-                        Log.e("DeleteDebug", "Delete failed: ${response.message}")
-                        Toast.makeText(context, "삭제 실패", Toast.LENGTH_SHORT).show()
-                        callback(false)
-                    }
-                }
-            }
-        })
+    // getItemCount: 아이템 총 개수 반환 (최대 10개만)
+    override fun getItemCount(): Int {
+        return if (plantList.size > 10) 10 else plantList.size // 최대 10개만 반환
     }
-
-    // getItemCount: 아이템 총 개수 반환
-    override fun getItemCount(): Int = plantList.size
 
     // 특정 위치의 데이터를 가져오는 getItem 메서드
     fun getItem(position: Int): PlantDto {
@@ -184,11 +122,6 @@ class PlantAdapter(
         notifyDataSetChanged() // 데이터 변경 후 UI 갱신
     }
 
-    // 아이템 삭제 메서드 (Delete)
-    fun removeItem(position: Int) {
-        plantList.removeAt(position)
-        notifyItemRemoved(position)
-    }
 
     // 아이템 추가 메서드 (Create)
     fun addItem(plant: PlantDto) {

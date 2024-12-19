@@ -58,8 +58,14 @@ class CreatePlantStartActivity : AppCompatActivity() {
         // 버튼 클릭 리스너 설정
         picAddButton.setOnClickListener {
             // 사진 촬영을 위한 액티비티로 이동
-            val intent = Intent(this, CameraActivity::class.java)
+            val intent = Intent(this, Camera::class.java)
             startActivity(intent)
+        }
+
+        // 뒤로가기 버튼 설정
+        val backButton: Button = findViewById(R.id.backButton)
+        backButton.setOnClickListener {
+            finish() // 현재 화면 종료
         }
     }
 
@@ -142,7 +148,7 @@ class CreatePlantStartActivity : AppCompatActivity() {
                 .build()
 
             val request = Request.Builder()
-                .url(BuildConfig.API_IMAGE_UPLOAD) // 서버 업로드 URL
+                .url(BuildConfig.API_CAMERA_STATUS) // 서버 업로드 URL
                 .post(requestBody)
                 .build()
 
@@ -162,7 +168,7 @@ class CreatePlantStartActivity : AppCompatActivity() {
                         val fileUrl = response.body?.string().orEmpty()
                         runOnUiThread {
                             val intent =
-                                Intent(this@CreatePlantStartActivity, CreatePlantNameActivity::class.java).apply {
+                                Intent(this@CreatePlantStartActivity, AddPlantActivity::class.java).apply {
                                     putExtra("imageUrl", fileUrl) // 업로드된 이미지 URL 전달
                                 }
                             startActivity(intent)

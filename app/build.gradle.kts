@@ -31,28 +31,16 @@ android {
         }
 
         // 기본 URL 및 엔드포인트를 BuildConfig에 추가
-        val baseUrl = localProperties.getProperty("api.ngrok.base.url", "http://localhost:8080/api")
+        val baseUrl = localProperties.getProperty("api.aws.base.url", "http://localhost:8080/api")
         val detectPath = localProperties.getProperty("api.plant.detect")
 
         buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")
 
         buildConfigField("String", "API_PLANT_DETECT", "\"$detectPath\"") // 식물 위치인식(aws에 따로 서버)
-        buildConfigField("String", "API_PLANT_RECOGNIZE", "\"$baseUrl/plants/recognize\"") // 식물 이름인식
-        buildConfigField("String", "API_PLANT_DELETE_TEMPLATE", "\"$baseUrl/plants/delete/{id}\"")
-        buildConfigField("String", "API_PLANT_LIST_TEMPLATE", "\"$baseUrl/plants/user/{userId}\"")
-        buildConfigField("String", "API_PLANT_CREATE", "\"$baseUrl/plants/create\"") // 식물 추가
+        buildConfigField("String", "API_PLANT_LIST_TEMPLATE", "\"$baseUrl/plants/user/{userId}\"") // 식물 리스트 불러오기
+        buildConfigField("String", "API_CAMERA_STATUS", "\"$baseUrl/camera/status\"") // 이미지촬영정보보 백엔드 저장, -> 식물 이름, 상태, 대처, url, 날짜 등
+        buildConfigField("String", "API_PLANT_DETAIL", "\"$baseUrl/plants/{id}\"") // 식물 정보디테일
 
-        buildConfigField("String", "API_IMAGE_UPLOAD", "\"$baseUrl/images/upload\"") // 이미지 awsS3 업로드
-
-        buildConfigField("String", "API_USER_CREATE", "\"$baseUrl/users/create\"")
-        buildConfigField("String", "API_USER_READ", "\"$baseUrl/users/read\"") // 앱 실행시켰을때 신규/기존 확인용
-        buildConfigField("String", "API_USER_DELETE", "\"$baseUrl/users/delete\"")
-
-        // 미구현
-        buildConfigField("String", "API_USER_UPDATE_NICKNAME", "\"$baseUrl/users/update/nickname\"") // 유저닉네임임 변경
-        buildConfigField("String", "API_PLANTS_STATUS", "\"$baseUrl/plants/status\"") // 식물 상태
-        buildConfigField("String", "API_PLANT_UPDATE", "\"$baseUrl/plants/update\"") // 식물 업데이트
-        buildConfigField("String", "API_WATER", "\"$baseUrl/watering\"") // 물 준 기록
     }
 
     buildFeatures {
@@ -86,6 +74,8 @@ android {
 
 val camerax_version = "1.3.0"
 dependencies {
+
+    implementation ("com.google.android.material:material:version")
     implementation ("androidx.fragment:fragment-ktx:1.6.1")
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     // CameraX (최신 BOM 사용)

@@ -3,105 +3,93 @@ package com.guguma.guguma_application
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.guguma.guguma_application.databinding.FragmentHomeBinding
+import okhttp3.*
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.guguma.guguma_application.dto.PlantDto
 import com.guguma.guguma_application.viewmodel.PlantViewModel
-import com.guguma.guguma_application.viewmodel.PlantViewModelFactory
 
 class HomeFragment : Fragment() {
-    companion object {
-        const val REQUEST_ADD_PLANT = 1001 // 요청 코드
-    }
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val plantViewModel: PlantViewModel by lazy {
-        val prefs = requireContext().getSharedPreferences("user_prefs", android.content.Context.MODE_PRIVATE)
-        val userId = prefs.getString("userUuid", null) ?: run {
-            Toast.makeText(requireContext(), "User ID not found. Setting default ID.", Toast.LENGTH_SHORT).show()
-            "default_user_id" // 기본 userId 제공
-        }
-        val factory = PlantViewModelFactory(userId)
-        ViewModelProvider(this, factory).get(PlantViewModel::class.java)
+    private val plantViewModel: PlantViewModel by activityViewModels()
+
+    companion object {
+        const val REQUEST_ADD_PLANT = 1001 // AddPlantActivity의 요청 코드
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        setupRecyclerView()
-        observePlantList()
-        setupAddPlantButton()
-
-        return binding.root
-    }
-
-    private fun setupRecyclerView() {
+        // RecyclerView 초기화: 빈 어댑터로 설정
         binding.plantListView.layoutManager = LinearLayoutManager(requireContext())
         binding.plantListView.adapter = PlantAdapter(requireContext(), mutableListOf()) { plantId ->
-            plantViewModel.deletePlant(plantId)
+           
         }
-    }
 
-    private fun observePlantList() {
+        // LiveData를 observe하여 UI 업데이트
         plantViewModel.plantList.observe(viewLifecycleOwner) { updatedPlantList ->
             updateUI(updatedPlantList)
         }
-    }
 
-    private fun setupAddPlantButton() {
-        binding.pBtn.setOnClickListener {
-            val intent = Intent(activity, CreatePlantStartActivity::class.java)
-            startActivityForResult(intent, REQUEST_ADD_PLANT)
-        }
+        // 식물 추가 버튼 클릭 리스너
+        //binding.pBtn.setOnClickListener {
+           // val intent = Intent(activity, testActivity::class.java)
+            //startActivityForResult(intent, REQUEST_ADD_PLANT)
+        //}
+
+        return binding.root
+
     }
 
     override fun onResume() {
         super.onResume()
-        plantViewModel.fetchPlantsFromServer()
+        // Fragment가 다시 활성화될 때 데이터 새로고침
+        plantViewModel.fetchPlantsFromServer() // 서버에서 최신 데이터를 가져옴
     }
 
+
+    // AddPlantActivity에서 돌아왔을 때 처리
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_ADD_PLANT && resultCode == Activity.RESULT_OK) {
-            handleAddPlantResult(data)
-        }
-    }
+            // AddPlantActivity에서 전달된 데이터
+            val plantId = data?.getLongExtra("plantId", -1L) ?: -1L
+            val newPlantName = data?.getStringExtra("newPlantName")
+            val newPlantNickname = data?.getStringExtra("newPlantNickname")
+            val newPlantImageUrl = data?.getStringExtra("newPlantImageUrl")
 
-    private fun handleAddPlantResult(data: Intent?) {
-        val plantId = data?.getLongExtra("plantId", -1L) ?: -1L
-        val newPlantName = data?.getStringExtra("newPlantName")
-        val newPlantNickname = data?.getStringExtra("newPlantNickname")
-        val newPlantImageUrl = data?.getStringExtra("newPlantImageUrl")
-
-        if (plantId != -1L && !newPlantName.isNullOrEmpty() && !newPlantNickname.isNullOrEmpty() && !newPlantImageUrl.isNullOrEmpty()) {
-            val newPlant = PlantDto(plantId, newPlantName, newPlantNickname, newPlantImageUrl)
-            plantViewModel.addPlant(newPlant)
-        }
-    }
-
-    private fun updateUI(plantList: MutableList<PlantDto>) {
-        val adapter = binding.plantListView.adapter
-        if (adapter is PlantAdapter) {
-            adapter.updateData(plantList)
-        } else {
-            binding.plantListView.adapter = PlantAdapter(requireContext(), plantList) { plantId ->
-                plantViewModel.deletePlant(plantId)
+            if (plantId != -1L && !newPlantName.isNullOrEmpty() && !newPlantNickname.isNullOrEmpty() && !newPlantImageUrl.isNullOrEmpty()) {
+                val newPlant = PlantDto(plantId, newPlantName, newPlantNickname, newPlantImageUrl)
+                //val adapter = binding.plantListView.adapter as? PlantAdapter
+                plantViewModel.addPlant(newPlant) // ViewModel에 데이터 추가
+                //adapter?.addItem(newPlant) // RecyclerView에 새 데이터 추가
             }
+        }
+    }
+
+    // UI 업데이트 메서드
+    private fun updateUI(plantList: MutableList<PlantDto>) {
+        if (binding.plantListView.adapter == null) {
+            binding.plantListView.layoutManager = LinearLayoutManager(requireContext())
+            
+        } else {
+            (binding.plantListView.adapter as PlantAdapter).updateData(plantList) // 어댑터 갱신
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // 메모리 누수 방지
     }
+
 }

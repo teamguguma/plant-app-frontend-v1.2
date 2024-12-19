@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#171A1C"
+    android:background="@color/background"
     tools:context=".IntroActivity">
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="177dp"
         android:layout_height="226dp"
-        android:contentDescription="@string/logo_description"
+        android:contentDescription="앱 식끌식끌의 로고로 새싹이 난 동그란 씨앗에 얼굴이 그려져 있다"
         android:src="@drawable/ic_guguma_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

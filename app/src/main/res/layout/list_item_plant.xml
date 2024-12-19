@@ -53,14 +53,13 @@
                     android:textStyle="bold" />
 
             <!-- 버튼 -->
-        <Button
+        <TextView
             android:id="@+id/delButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="삭제"
-            android:textColor="@android:color/white"/>
+            android:text="날짜" />
 
                 <TextView
                     android:id="@+id/plantNicknameTextView"
@@ -71,7 +70,7 @@
                     app:layout_constraintEnd_toEndOf="@+id/plantNameTextView"
                     app:layout_constraintStart_toStartOf="@+id/plantNameTextView"
                     app:layout_constraintTop_toBottomOf="@+id/plantNameTextView"
-                    android:text="식물애칭 입력란"
+                    android:text="날짜"
                     android:textSize="15sp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,45 +5,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    tools:context=".HomeFragment"
+    android:background="@color/background">
 
+    
     <!-- 첫 번째 컨테이너 -->
     <LinearLayout
         android:id="@+id/home_containerLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+        
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="30dp"
+            android:textSize="24sp"
+            android:text="최근 촬영 식물 목록"
+            android:textColor="@color/main_text"/>
+            
 
-        <!-- 식물 추가 버튼 -->
-        <Button
+        
+        
+        <!-- 식물 추가 버튼
+         <Button
             android:id="@+id/pBtn"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:text="식물 추가"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
             android:background="@color/black"
             android:textColor="@color/white"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/plantBtnString"/>
-
-        <ImageButton
-            android:id="@+id/watercheck_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/back_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginRight="25dp"
-            android:layout_marginLeft="130dp"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_watercheck"/>
+       
+         -->
+        
+        
 
     </LinearLayout>
 
