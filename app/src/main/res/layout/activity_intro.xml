@@ -9,13 +9,34 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="177dp"
-        android:layout_height="226dp"
+        android:layout_width="160dp"
+        android:layout_height="150dp"
         android:contentDescription="앱 식끌식끌의 로고로 새싹이 난 동그란 씨앗에 얼굴이 그려져 있다"
         android:src="@drawable/ic_guguma_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/main_text"
+        android:layout_marginTop="470dp"
+        android:contentDescription="이 앱은 현대오토에버와 서울사회복지공동모금회의 지원을 받아 제작되었습니다."
+        android:fontFamily="@font/nanumbarungothic"
+        android:text="이 앱은 현대오토에버와 \n 서울사회복지공동모금회의\n 지원을 받아 제작되었습니다."
+        android:textSize="18sp"
+        android:letterSpacing="0.05"
+        android:lineSpacingExtra="4dp"
+        android:lineSpacingMultiplier="1.2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

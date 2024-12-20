@@ -14,16 +14,20 @@
 
     <TextView
         android:id="@+id/textWelcome"
-        android:layout_width="359sp"
-        android:layout_height="77sp"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="80dp"
         android:textColor="@color/main_text"
         android:contentDescription="새로운 식집사님 반갑습니다!"
         android:fontFamily="@font/nanumbarungothicbold"
         android:text="새로운 식집사님\n반갑습니다!"
-        android:textSize="34sp"
+        android:letterSpacing="0.05"
+        android:lineSpacingExtra="0.2dp"
+        android:lineSpacingMultiplier="1.2"
+        android:textSize="25sp"
         android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,19 +37,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/main_text"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="30dp"
         android:contentDescription="식끌식끌과 함께 식물 키우기를 시작해봐요!"
         android:fontFamily="@font/nanumbarungothic"
         android:text="식끌식끌과 함께 식물 키우기를 시작해봐요!"
-        android:textSize="20sp"
+        android:textSize="18sp"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textWelcome" />
 
     <ImageView
         android:id="@+id/imageLogo"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="95dp"
         android:contentDescription="앱 식끌식끌의 로고로 새싹이 난 동그란 씨앗에 얼굴이 그려져 있다"
         android:src="@drawable/ic_guguma_logo"
@@ -57,7 +61,7 @@
         android:id="@+id/permissionChecklist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="270dp"
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textWelcome">
@@ -71,7 +75,8 @@
             android:padding="6dp"
             android:textColor="@color/main_text"
             android:text="카메라 권한 허용"
-            android:textSize="18sp" />
+            android:labelFor="@id/checkCamera"
+            android:textSize="16sp" />
 
     </LinearLayout>
     <LinearLayout
@@ -80,7 +85,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/permissionChecklist" >
+        app:layout_constraintTop_toBottomOf="@+id/permissionChecklist"
+        android:importantForAccessibility="yes" >
 
 
         <CheckBox
@@ -90,16 +96,19 @@
             android:minWidth="48dp"
             android:minHeight="48dp"
             android:padding="6dp"
+            android:focusedSearchResultHighlightColor="@color/button"
+            android:labelFor="@id/checkGallery"
             android:layout_marginTop="10dp"
             android:textColor="@color/main_text"
             android:text="갤러리 접근 권한 허용"
-            android:textSize="18sp" />
+            android:textSize="16sp"
+            android:importantForAccessibility="yes" />
 
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/ButtonStartUserNickname"
+        android:id="@+id/ButtonGotoMain"
         android:layout_width="354dp"
         android:layout_height="70dp"
         android:backgroundTint="@color/button"

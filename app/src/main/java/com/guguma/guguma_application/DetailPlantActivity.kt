@@ -1,9 +1,5 @@
 package com.guguma.guguma_application
 
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
@@ -13,10 +9,9 @@ import com.bumptech.glide.request.RequestOptions
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
-import java.io.InputStream
 
 // 식물 상세 페이지
-class AddPlantActivity : AppCompatActivity() {
+class DetailPlantActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
     private lateinit var plantNameTextView: TextView
@@ -54,9 +49,9 @@ class AddPlantActivity : AppCompatActivity() {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("AddPlantActivity", "Failed to fetch plant details: ${e.message}")
+                Log.e("DetailPlantActivity", "Failed to fetch plant details: ${e.message}")
                 runOnUiThread {
-                    Toast.makeText(this@AddPlantActivity, "식물 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@DetailPlantActivity, "식물 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -75,7 +70,7 @@ class AddPlantActivity : AppCompatActivity() {
                             plantStatusTextView.text = status
                             plantRemedyTextView.text = remedy
                             if (imageUrl.isNotEmpty()) {
-                                Glide.with(this@AddPlantActivity)
+                                Glide.with(this@DetailPlantActivity)
                                     .load(imageUrl)
                                     .apply(RequestOptions.centerCropTransform())
                                     .into(imageView)
@@ -83,9 +78,9 @@ class AddPlantActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    Log.e("AddPlantActivity", "Error: ${response.code}")
+                    Log.e("DetailPlantActivity", "Error: ${response.code}")
                     runOnUiThread {
-                        Toast.makeText(this@AddPlantActivity, "식물 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@DetailPlantActivity, "식물 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

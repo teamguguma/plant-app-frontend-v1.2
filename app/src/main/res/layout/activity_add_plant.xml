@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".AddPlantActivity">
+    tools:context=".DetailPlantActivity">
 
 
     <ScrollView
@@ -80,7 +80,6 @@
                             android:background="@color/main_text"
                             android:textColor="@color/blackText"
                             android:textSize="18sp"
-                            android:text="식물 종 텍스트"
                             android:contentDescription="식물의 종을 나타냅니다."
                             android:layout_gravity="center"
                             app:layout_constraintTop_toBottomOf="@+id/plantSearchTextView"/>
@@ -125,8 +124,7 @@
                             android:background="@color/main_text"
                             android:textColor="@color/blackText"
                             android:textSize="18sp"
-                            android:layout_gravity="center"
-                            android:text="기본 관리 방법 설명 텍스트" 
+                            android:layout_gravity="center" 
                         android:contentDescription="식물의 관리 방법을 나타냅니다." 
                             app:layout_constraintTop_toBottomOf="@+id/plantNicknameTextView"/>
                     </FrameLayout>
@@ -170,7 +168,6 @@
                             android:textColor="@color/blackText"
                             android:textSize="18sp"
                             android:layout_gravity="center"
-                            android:text="기본 상태 설명 텍스트" 
                         android:contentDescription="현재 식물의 상태를 나타냅니다" 
                             app:layout_constraintTop_toBottomOf="@+id/plantStatusTextView"/>
                     </FrameLayout>

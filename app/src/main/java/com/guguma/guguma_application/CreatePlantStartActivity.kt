@@ -25,7 +25,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-
+import com.guguma.guguma_application.CameraActivity
 class CreatePlantStartActivity : AppCompatActivity() {
 
     private val STORAGE_PERMISSION_CODE = 1001 // 권한 코드 정의
@@ -58,7 +58,7 @@ class CreatePlantStartActivity : AppCompatActivity() {
         // 버튼 클릭 리스너 설정
         picAddButton.setOnClickListener {
             // 사진 촬영을 위한 액티비티로 이동
-            val intent = Intent(this, Camera::class.java)
+            val intent = Intent(this, CameraActivity::class.java)
             startActivity(intent)
         }
 
@@ -168,7 +168,7 @@ class CreatePlantStartActivity : AppCompatActivity() {
                         val fileUrl = response.body?.string().orEmpty()
                         runOnUiThread {
                             val intent =
-                                Intent(this@CreatePlantStartActivity, AddPlantActivity::class.java).apply {
+                                Intent(this@CreatePlantStartActivity, DetailPlantActivity::class.java).apply {
                                     putExtra("imageUrl", fileUrl) // 업로드된 이미지 URL 전달
                                 }
                             startActivity(intent)

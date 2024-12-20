@@ -29,21 +29,6 @@
             android:layout_gravity="center_horizontal"
             />
 
-        <Switch
-            android:id="@+id/modeToggle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_margin="16dp"
-            android:text="자동 촬영"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:padding="12dp"
-            android:minHeight="48dp"
-            android:minWidth="96dp"
-            android:contentDescription="자동 촬영 모드 토글 버튼"
-            app:layout_constraintTop_toBottomOf="@id/warningTextView"
-            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.camera.view.PreviewView>
 
     <!-- X 버튼 -->
@@ -69,20 +54,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:background="@color/background"
         app:layout_constraintEnd_toEndOf="parent">
-
-
-        <!-- 갤러리 버튼 -->
-        <ImageButton
-            android:id="@+id/gallery_button"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/photo_button"
-            android:contentDescription="@string/gallery_button_description"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="32dp"/>
 
 
         <!-- 셔터 버튼 -->
