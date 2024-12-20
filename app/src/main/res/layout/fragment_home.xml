@@ -27,31 +27,8 @@
             android:layout_marginTop="30dp"
             android:textSize="24sp"
             android:text="최근 촬영 식물 목록"
+            android:contentDescription="최근 촬영한 식물 목록을 보여줍니다"
             android:textColor="@color/main_text"/>
-            
-
-        
-        
-        <!-- 식물 추가 버튼
-         <Button
-            android:id="@+id/pBtn"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="식물 추가"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:background="@color/black"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/plantBtnString"/>
-       
-         -->
-        
         
 
     </LinearLayout>
@@ -69,7 +46,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/plantListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:contentDescription="최근 촬영된 식물의 목록입니다. 항목을 선택하여 자세히 알아보세요." />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

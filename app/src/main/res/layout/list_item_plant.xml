@@ -10,22 +10,13 @@
         android:layout_marginBottom="16dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="12dp"
-        app:cardElevation="2dp">
+        app:cardElevation="2dp" >
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
-
-        <!-- 체크박스 -->
-        <CheckBox
-            android:id="@+id/plantcheckBox"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="gone" /> <!-- 기본적으로 숨김 -->
+        android:padding="16dp" >
 
 
             <!-- 식물 이미지 -->
@@ -34,9 +25,9 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="10dp"
-                app:layout_constraintStart_toEndOf="@+id/plantcheckBox"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_toRightOf="@+id/plantcheckBox"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
         
 
                 <TextView
@@ -45,21 +36,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="12dp"
-                    app:layout_constraintEnd_toStartOf="@+id/delButton"
                     app:layout_constraintStart_toEndOf="@+id/plantImageView"
                     app:layout_constraintTop_toTopOf="@+id/plantImageView"
                     android:text="리스트뷰"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
-            <!-- 버튼 -->
-        <TextView
-            android:id="@+id/delButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="날짜" />
+
 
                 <TextView
                     android:id="@+id/plantNicknameTextView"

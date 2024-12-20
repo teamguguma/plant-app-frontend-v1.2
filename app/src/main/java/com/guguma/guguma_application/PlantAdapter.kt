@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -31,39 +30,19 @@ class PlantAdapter(
     private val plantList: MutableList<PlantDto>,
     private val onDelete: (Long) -> Unit, // 삭제 버튼 클릭 시 호출할 콜백
 ) : RecyclerView.Adapter<PlantAdapter.PlantViewHolder>() {
-
-    // 선택 모드 상태
-    var isSelectable = false
-        private set // 외부에서 수정 불가
-
-    // 선택 모드 종료 메서드
-    fun exitSelectionMode() {
-        if (isSelectable) {
-            isSelectable = false
-            plantList.forEach { it.isSelected = false }
-            notifyDataSetChanged() // UI 업데이트
-        }
-    }
+    
 
     inner class PlantViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val checkBox: CheckBox = itemView.findViewById(R.id.plantcheckBox)
-        val deleteButton: Button = itemView.findViewById(R.id.delButton)
         val plantNameTextView: TextView = itemView.findViewById(R.id.plantNameTextView)
         val plantNicknameTextView: TextView = itemView.findViewById(R.id.plantNicknameTextView)
         val plantImageView: ImageView = itemView.findViewById(R.id.plantImageView)
 
         fun bind(plant: PlantDto) {
             plantNameTextView.text = plant.name
-            plantNicknameTextView.text = plant.nickname
+            //val contentDescription = "${plant.name}, 촬영 날짜: ${plant.date}"
+            //plantNicknameTextView.text = plant.nickname
             Glide.with(context).load(plant.imageUrl).into(plantImageView)
 
-            // 체크박스 표시 여부
-            checkBox.visibility = if (isSelectable) View.VISIBLE else View.GONE
-            checkBox.isChecked = plant.isSelected
-
-            // 삭제 버튼 활성화 여부
-            deleteButton.isEnabled = !isSelectable
-            deleteButton.alpha = if (isSelectable) 0.5f else 1.0f // 버튼 비활성화 시 시각적 효과
         }
     }
 
@@ -76,34 +55,19 @@ class PlantAdapter(
         val plant = plantList[position]
         holder.bind(plant)
 
-        // 길게 누르기 이벤트: 선택 모드 활성화
-        holder.itemView.setOnLongClickListener {
-            if (!isSelectable) {
-                isSelectable = true
-                notifyDataSetChanged() // 선택 모드 활성화
-            }
-            true
-        }
 
         // 클릭 이벤트: 상세 화면 이동 또는 체크박스 상태 변경
         holder.itemView.setOnClickListener {
-            if (isSelectable) {
                 plant.isSelected = !plant.isSelected
-                holder.checkBox.isChecked = plant.isSelected
-            } else {
                 val intent = Intent(context, AddPlantActivity::class.java).apply {
                     putExtra("plantName", plant.name)
                     putExtra("plantNickname", plant.nickname)
                     putExtra("plantImageUrl", plant.imageUrl)
                 }
                 context.startActivity(intent)
-            }
         }
 
-
     }
-
-
 
     // getItemCount: 아이템 총 개수 반환 (최대 10개만)
     override fun getItemCount(): Int {

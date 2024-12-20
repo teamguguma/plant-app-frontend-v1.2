@@ -41,11 +41,6 @@ class HomeFragment : Fragment() {
             updateUI(updatedPlantList)
         }
 
-        // 식물 추가 버튼 클릭 리스너
-        //binding.pBtn.setOnClickListener {
-           // val intent = Intent(activity, testActivity::class.java)
-            //startActivityForResult(intent, REQUEST_ADD_PLANT)
-        //}
 
         return binding.root
 
@@ -65,17 +60,15 @@ class HomeFragment : Fragment() {
             // AddPlantActivity에서 전달된 데이터
             val plantId = data?.getLongExtra("plantId", -1L) ?: -1L
             val newPlantName = data?.getStringExtra("newPlantName")
-            val newPlantNickname = data?.getStringExtra("newPlantNickname")
             val newPlantImageUrl = data?.getStringExtra("newPlantImageUrl")
 
-            if (plantId != -1L && !newPlantName.isNullOrEmpty() && !newPlantNickname.isNullOrEmpty() && !newPlantImageUrl.isNullOrEmpty()) {
-                val newPlant = PlantDto(plantId, newPlantName, newPlantNickname, newPlantImageUrl)
-                //val adapter = binding.plantListView.adapter as? PlantAdapter
+            if (plantId != -1L && !newPlantName.isNullOrEmpty() && !newPlantImageUrl.isNullOrEmpty()) {
+                val newPlant = PlantDto(plantId, newPlantName, newPlantImageUrl)
                 plantViewModel.addPlant(newPlant) // ViewModel에 데이터 추가
-                //adapter?.addItem(newPlant) // RecyclerView에 새 데이터 추가
             }
         }
     }
+
 
     // UI 업데이트 메서드
     private fun updateUI(plantList: MutableList<PlantDto>) {

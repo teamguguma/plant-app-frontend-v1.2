@@ -7,9 +7,9 @@
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
 
-    <string name="shutter_button_description">사진 찍기</string>
-    <string name="gallery_button_description">사진 선택</string>
-    <string name="close_button_description">카메라 닫기</string>
+    <string name="shutter_button_description">사진 촬영 버튼</string>
+    <string name="gallery_button_description">갤러리 열기 버튼</string>
+    <string name="close_button_description">카메라 닫기 버튼</string>
     <string name="back_button">뒤로가기</string>
     <string name="register_plant">식물 등록 방식을 선택해주세요.</string>
     <string name="error_title">오류</string>

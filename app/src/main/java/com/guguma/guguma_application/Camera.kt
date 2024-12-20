@@ -33,6 +33,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import okhttp3.Call
 import okhttp3.Callback
+import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -49,10 +51,14 @@ import java.util.concurrent.Executors
 
 class Camera() : AppCompatActivity(), Parcelable {
 
-    private lateinit var viewFinder: PreviewView  // 카메라 미리보기를 위한 PreviewView
+    // 카메라와 관련된 주요 변수
+    private lateinit var cameraProvider: ProcessCameraProvider
+    private lateinit var cameraSelector: CameraSelector
+    private lateinit var preview: Preview
     private lateinit var imageCapture: ImageCapture
-    private lateinit var cameraExecutor: ExecutorService  // 카메라 작업을 위한 Executor
-    private val client = OkHttpClient()  // OkHttpClient 초기화
+    private lateinit var cameraExecutor: ExecutorService
+    private lateinit var viewFinder: PreviewView
+    private val client = OkHttpClient() // 네트워크 클라이언트
     private val STORAGE_PERMISSION_CODE = 1001 // 권한 코드 정의
 
     // 권한 요청 런처 추가
@@ -151,6 +157,7 @@ class Camera() : AppCompatActivity(), Parcelable {
                 Log.d("CameraXApp", "카메라가 성공적으로 시작되었습니다.")
             } catch (exc: Exception) {
                 Log.e("CameraXApp", "Use case binding failed", exc)
+                Toast.makeText(this, "카메라 초기화에 실패했습니다.", Toast.LENGTH_SHORT).show()
             }
         }, ContextCompat.getMainExecutor(this))
     }
@@ -191,6 +198,7 @@ class Camera() : AppCompatActivity(), Parcelable {
             }
         )
     }
+    
 
     // Bitmap으로 변환하는 확장 함수 추가
     private fun ImageProxy.toBitmap(): Bitmap? {
@@ -216,6 +224,16 @@ class Camera() : AppCompatActivity(), Parcelable {
     }
 
     private fun sendImageToServer(bitmap: Bitmap?) {
+        val url = BuildConfig.API_PLANT_DETECT // 서버 URL
+
+        if (url.isNullOrEmpty()) {
+            Log.e("Camera", "Invalid URL: $url")
+            return
+        }
+
+        val httpUrl = url.toHttpUrl() // URL 유효성 검사 추가
+
+
         if (bitmap == null) {
             Log.e("DebugNetwork", "Bitmap is null, cannot send to server.")
             return
@@ -271,6 +289,7 @@ class Camera() : AppCompatActivity(), Parcelable {
                     Log.e("DebugNetwork", "Failed to send image to server: ${e.message}", e)
                     //e.printStackTrace()
                     runOnUiThread {
+                        Log.d("DebugNetwork", "showFailurePopup called")
                         showFailurePopup()  // Show failure alert if image transmission fails
                     }
                 }
@@ -296,27 +315,21 @@ class Camera() : AppCompatActivity(), Parcelable {
             .setMessage("식물을 등록하시겠습니까?")
             .setPositiveButton("예") { dialog, _ ->
                 dialog.dismiss()
-                val uri = saveImageToGallery(bitmap)
                 val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
                 val userUuid = prefs.getString("userUuid", null) ?: ""
+
+                // 이미지를 서버로 전송
                 ImageStatusAndSave(bitmap, userUuid)
-                if (uri != null) {
-                    // AddPlantActivity로 이동하며 URI 전달
-                    val intent = Intent(this, AddPlantActivity::class.java).apply {
-                        putExtra("imageUri", uri.toString())
-                    }
-                    startActivity(intent)
 
-                    // 토스트 메시지 표시
-                    Toast.makeText(this, "사진이 갤러리에 저장되었습니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "사진 저장에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                }
+                // AddPlantActivity로 이동
+                val intent = Intent(this, AddPlantActivity::class.java)
+                startActivity(intent)
 
+                // 토스트 메시지 표시
+                Toast.makeText(this, "사진이 성공적으로 등록되었습니다.", Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("아니오") { dialog, _ ->
                 dialog.dismiss()
-                //takePicture()
             }
             .create()
             .show()
@@ -331,32 +344,6 @@ class Camera() : AppCompatActivity(), Parcelable {
             }
             .create()
             .show()
-    }
-
-    private fun saveImageToGallery(bitmap: Bitmap): Uri? {
-        val contentValues = ContentValues().apply {
-            put(MediaStore.Images.Media.DISPLAY_NAME, "captured_image_${System.currentTimeMillis()}.jpg")
-            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/Guguma_Application")
-            } else {
-                val directory = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Guguma_Application")
-                if (!directory.exists()) directory.mkdirs()
-                put(MediaStore.Images.Media.DATA, File(directory, "captured_image_${System.currentTimeMillis()}.jpg").absolutePath)
-            }
-        }
-
-        val resolver = contentResolver
-        val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-
-        uri?.let {
-            resolver.openOutputStream(it)?.use { outputStream ->
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            }
-        }
-
-        return uri
     }
 
     override fun onDestroy() {

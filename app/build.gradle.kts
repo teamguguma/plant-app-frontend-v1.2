@@ -31,8 +31,8 @@ android {
         }
 
         // 기본 URL 및 엔드포인트를 BuildConfig에 추가
-        val baseUrl = localProperties.getProperty("api.aws.base.url", "http://localhost:8080/api")
         val detectPath = localProperties.getProperty("api.plant.detect")
+        val baseUrl = localProperties.getProperty("api.key.aws.base", "http://localhost:8080/api")
 
         buildConfigField("String", "BASE_URL", "\"${baseUrl}\"")
 

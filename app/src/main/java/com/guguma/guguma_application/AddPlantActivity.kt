@@ -15,13 +15,13 @@ import org.json.JSONObject
 import java.io.IOException
 import java.io.InputStream
 
+// 식물 상세 페이지
 class AddPlantActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
     private lateinit var plantNameTextView: TextView
     private lateinit var plantStatusTextView: TextView
     private lateinit var plantRemedyTextView: TextView
-    //private lateinit var addPlantButton: Button
 
     private val client = OkHttpClient()
 
